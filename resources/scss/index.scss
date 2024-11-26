@@ -46,3 +46,42 @@ progress {
         background-color: red;
     }
 }
+
+
+
+
+.credits-visualizer {
+
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 50%;
+
+    .credits-visualizer-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: gray;
+        transform: rotate(45deg);
+
+
+        transition: background-color 2.5s;
+
+        transform: scale(1);
+
+        &.negative {
+            background-color: red;
+        }
+
+        &.positive {
+            background-color: green;
+        }
+
+        &.pool {
+            background-color: blue!important;
+        }
+    }
+
+
+}

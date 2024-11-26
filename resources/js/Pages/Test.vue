@@ -14,6 +14,8 @@
 
 
 
+import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';
+
 import DataOverview from '@/Components/DataOverview.vue';
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
@@ -140,7 +142,7 @@ const castVote = (issueUuid: string, opposed: boolean) => {
         vote.creditsSpent = Number((vote.creditsSpent + voteCost).toFixed(2));
         vote.numberOfVotes = Number((vote.numberOfVotes + (opposed ? -votingStep : votingStep)).toFixed(1));
     } else {
-        console.warn("Not enough credits to cast vote");
+        console.info("Not enough credits to cast vote");
         return;
     }
 }
@@ -171,14 +173,20 @@ const stopVoting = (issueUuid: string) => {
    
     <h1>{{ votingRound.name }}</h1>
     <span>Credits: {{ remainingCredits }}</span>
-    <br/><br/>
+    
+    <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits" :isPool="true" />
 
     <div class="issues" v-for="(issue, index) in issues" :key="index">
 
         <div class="issue">
             <h2>{{ issue.text }} [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes }}] [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent }}]</h2>
 
-           
+            <CreditsVisualizer 
+            :votes="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
+            :credits="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
+            :maxCredits="maxCredits" 
+            :isPool="false" />
+
             
             <div class="buttons">
 

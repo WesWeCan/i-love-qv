@@ -14,7 +14,7 @@
 
 
 
-
+import DataOverview from '@/Components/DataOverview.vue';
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
 
@@ -168,8 +168,7 @@ const stopVoting = (issueUuid: string) => {
 </script>
 
 <template>
-
-
+   
     <h1>{{ votingRound.name }}</h1>
     <span>Credits: {{ remainingCredits }}</span>
     <br/><br/>
@@ -177,7 +176,9 @@ const stopVoting = (issueUuid: string) => {
     <div class="issues" v-for="(issue, index) in issues" :key="index">
 
         <div class="issue">
-            <h2>{{ issue.text }} [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes }}]</h2>
+            <h2>{{ issue.text }} [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes }}] [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent }}]</h2>
+
+           
             
             <div class="buttons">
 
@@ -204,7 +205,10 @@ const stopVoting = (issueUuid: string) => {
 
     <hr>
 
+    <DataOverview :participant="participant" :votingRound="votingRound" :issues="issues" />
+
     <br><br>
+
 
     <pre>{{ participant }}</pre>
 

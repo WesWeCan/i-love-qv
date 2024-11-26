@@ -27,3 +27,22 @@ button {
     gap: 1rem;
     width: max-content;
 }
+
+progress {
+    width: 100%;
+    -webkit-appearance: none;
+
+    margin-bottom: 1rem;
+
+    &::-webkit-progress-bar {
+        background-color: #9d9d9d;
+    }
+
+    &::-webkit-progress-value {
+        background-color: green;
+    }
+
+    &.negative::-webkit-progress-value {
+        background-color: red;
+    }
+}

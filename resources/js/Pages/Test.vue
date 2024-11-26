@@ -68,7 +68,7 @@ const issues = ref<VotingTypes.Issue[]>([
 
 const participant = ref<VotingTypes.Participant>(
     {
-        name: 'Wesley Wecan',
+        name: null,
         userUuid: 'user-1',
         castedVotes: [],
     }
@@ -77,7 +77,7 @@ const participant = ref<VotingTypes.Participant>(
 const votingRound = ref<VotingTypes.VotingRound>({
     id: 1,
     uuid: 'voting-round-1',
-    name: 'Voting Round 1',
+    name: 'Wat moet er in de fruitschaal?',
     credits: 100,
     issues: issues.value,
     options: {
@@ -92,6 +92,11 @@ onMounted(() => {
 
     maxCredits.value = votingRound.value.credits;
     remainingCredits.value = votingRound.value.credits;
+
+
+
+
+
 
 
 });
@@ -124,7 +129,7 @@ const votingStep = .1;
 const castVote = (issueUuid: string, opposed: boolean) => {
     const vote = participant.value.castedVotes.find(vote => vote.issueUuid === issueUuid);
 
-    if(!vote) {
+    if (!vote) {
         console.error("Could not find vote for issue", issueUuid);
         return;
     }
@@ -134,10 +139,10 @@ const castVote = (issueUuid: string, opposed: boolean) => {
 
     const newVotes = opposed ? votesCast - votingStep : votesCast + votingStep;
     const voteNewWorth = Number((newVotes * newVotes).toFixed(2));
-    
+
     const voteCost = Number((voteNewWorth - voteCurrentWorth).toFixed(2));
 
-    if(remainingCredits.value - voteCost >= 0 && remainingCredits.value - voteCost <= maxCredits.value) {
+    if (remainingCredits.value - voteCost >= 0 && remainingCredits.value - voteCost <= maxCredits.value) {
         remainingCredits.value = Number((remainingCredits.value - voteCost).toFixed(2));
         vote.creditsSpent = Number((vote.creditsSpent + voteCost).toFixed(2));
         vote.numberOfVotes = Number((vote.numberOfVotes + (opposed ? -votingStep : votingStep)).toFixed(1));
@@ -170,55 +175,72 @@ const stopVoting = (issueUuid: string) => {
 </script>
 
 <template>
-   
-    <h1>{{ votingRound.name }}</h1>
-    <span>Credits: {{ remainingCredits }}</span>
-    
-    <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits" :isPool="true" />
 
-    <div class="issues" v-for="(issue, index) in issues" :key="index">
+    <div class="voting-round">
+        <header>
+            <h1>{{ votingRound.name }}</h1>
+        </header>
 
-        <div class="issue">
-            <h2>{{ issue.text }} [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes }}] [{{ participant?.castedVotes.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent }}]</h2>
 
-            <CreditsVisualizer 
-            :votes="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
-            :credits="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
-            :maxCredits="maxCredits" 
-            :isPool="false" />
+        <div class="voting-interface">
+            <div class="credit-pool">
+                <span>Credits left: {{ remainingCredits }}</span>
 
-            
-            <div class="buttons">
-
-                <button 
-                    @pointerdown="startVoting(issue.uuid, false)"
-                    @pointerup="stopVoting(issue.uuid)"
-                    @pointerleave="stopVoting(issue.uuid)"
-                >Vote in favor</button>
-                <button 
-                    @pointerdown="startVoting(issue.uuid, true)"
-                    @pointerup="stopVoting(issue.uuid)"
-                    @pointerleave="stopVoting(issue.uuid)"
-                >Vote against</button>
+                <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
+                    :isPool="true" />
 
             </div>
-            
 
-            <br/><br/>
+            <div class="issues" >
 
+                <template v-for="(issue, index) in issues" :key="index">
+                <div class="issue">
+                    <h2>{{ issue.text }}</h2>
+
+                    <CreditsVisualizer
+                        :votes="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
+                        :credits="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
+                        :maxCredits="maxCredits" :isPool="false" />
+
+
+                    <div class="buttons">
+
+                        <button @pointerdown="startVoting(issue.uuid, true)" @pointerup="stopVoting(issue.uuid)"
+                        @pointerleave="stopVoting(issue.uuid)">
+                    
+                        {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) > 0 ? 'Fewer' : 'Vote against' }}
+                    
+                    </button>
+
+                        <button @pointerdown="startVoting(issue.uuid, false)" @pointerup="stopVoting(issue.uuid)"
+                            @pointerleave="stopVoting(issue.uuid)">
+                            {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 ? 'Fewer' : 'Vote in favor' }}
+                        </button>
+                       
+
+                    </div>
+
+                    <div class="buttons">
+                        <span>[{{ participant?.castedVotes.find(vote => vote.issueUuid ===
+                        issue.uuid)?.numberOfVotes }} votes]</span>
+                        
+                        <span>[{{ participant?.castedVotes.find(vote => vote.issueUuid ===
+                            issue.uuid)?.creditsSpent }} credits]</span>
+                    </div>
+
+
+
+                </div>
+            </template>
+
+            </div>
         </div>
-        
+
     </div>
-
-
     <hr>
 
     <DataOverview :participant="participant" :votingRound="votingRound" :issues="issues" />
 
-    <br><br>
-
-
-    <pre>{{ participant }}</pre>
 
 
 

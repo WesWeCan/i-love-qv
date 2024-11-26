@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import * as VotingTypes from '@/types/voting-types';
 
-    const props = defineProps<{
-        participant: VotingTypes.Participant;
-        votingRound: VotingTypes.VotingRound;
-        issues: VotingTypes.Issue[];
-    }>();
+const props = defineProps<{
+    participant: VotingTypes.Participant;
+    votingRound: VotingTypes.VotingRound;
+    issues: VotingTypes.Issue[];
+}>();
 
 </script>
 
@@ -19,22 +19,31 @@ import * as VotingTypes from '@/types/voting-types';
             <p>Credits: {{ props.votingRound.credits }}</p>
             <p>Number of Issues: {{ props.issues.length }}</p>
 
-            <div class="issues" v-for="(issue, index) in issues" :key="index">
+            <div class="data-issues" v-for="(issue, index) in issues" :key="index">
 
-<div class="issue">
-    <strong>{{ issue.text }} [{{ participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0 }} Votes] [{{ participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0 }} Credits]</strong>
+                <div class="issue">
+                    <strong>{{ issue.text }} [{{ participant?.castedVotes?.find(vote => vote.issueUuid ===
+                        issue.uuid)?.numberOfVotes || 0 }} Votes] [{{ participant?.castedVotes?.find(vote =>
+                            vote.issueUuid === issue.uuid)?.creditsSpent || 0 }} Credits]</strong>
 
-    <progress :value="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0" :max="votingRound.credits"
-        :class="{ negative: (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 }"
-        ></progress>
-    
-   
+                    <progress
+                        :value="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
+                        :max="votingRound.credits"
+                        :class="{ negative: (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 }"></progress>
 
-</div>
 
-</div>
+
+                </div>
+
+            </div>
 
         </div>
+
+
+    <br><br>
+
+
+<pre>{{ participant }}</pre>
     </div>
 
 </template>

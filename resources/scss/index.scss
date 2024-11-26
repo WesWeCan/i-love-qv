@@ -9,9 +9,12 @@
 }
 
 body {
-    padding: 1rem;
+    // padding: 1rem;
     font-family: sans-serif;
-  
+    // max-width: 800px;
+    margin: 0 auto;
+
+    overscroll-behavior-x: none;
 }
 
 button {
@@ -48,7 +51,9 @@ progress {
 }
 
 
-
+.data-overview {
+    padding: 2rem;
+}
 
 .credits-visualizer {
 
@@ -84,4 +89,60 @@ progress {
     }
 
 
+}
+
+
+.voting-round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+
+    .voting-interface {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .credit-pool {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .issues {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        max-width: 100%;
+
+        gap: 1rem;
+        padding: 1rem;
+
+        .issue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 100%;
+            
+            
+        }
+    }
+
+
+    
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }

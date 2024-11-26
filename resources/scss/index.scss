@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    font-size: 12px;
+}
+
+body {
+    padding: 1rem;
+    font-family: sans-serif;
+  
+}
+
+button {
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: max-content;
+}

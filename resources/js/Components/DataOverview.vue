@@ -31,6 +31,11 @@ const props = defineProps<{
                         :max="votingRound.credits"
                         :class="{ negative: (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 }"></progress>
 
+                        <progress
+                        :value="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
+                        :max="10"
+                        :class="{ negative: (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 }"></progress>
+
 
 
                 </div>

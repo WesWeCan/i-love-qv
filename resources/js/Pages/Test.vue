@@ -1,16 +1,29 @@
 <script setup lang="ts">
 
 // Quadratic Cheat Sheet
-// 1 vote = 1 credit
-// 2 vote = 4 credits
-// 3 vote = 9 credits
-// 4 vote = 16 credits
-// 5 vote = 25 credits
-// 6 vote = 36 credits
-// 7 vote = 49 credits
-// 8 vote = 64 credits
-// 9 vote = 81 credits
-// 10 vote = 100 credits
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+//    =   
+
+
+// 1     credit     = 1    vote 
+// 4     credits    = 2    vote 
+// 9     credits    = 3    vote 
+// 16    credits    = 4    vote 
+// 25    credits    = 5    vote 
+// 36    credits    = 6    vote 
+// 49    credits    = 7    vote 
+// 64    credits    = 8    vote 
+// 81    credits    = 9    vote 
+// 100   credits    = 10   vote 
+
 
 
 
@@ -89,15 +102,8 @@ onMounted(() => {
 
     setupParticipant();
 
-
     maxCredits.value = votingRound.value.credits;
     remainingCredits.value = votingRound.value.credits;
-
-
-
-
-
-
 
 });
 
@@ -119,7 +125,9 @@ const intervals: { [key: string]: number } = {};
 // Duration between vote casts in milliseconds
 const intervalDuration = 50;
 // Amount to increment/decrement votes by
-const votingStep = .1;
+const votingStep = .25;
+
+const creditSpendingStep = 1;
 
 /**
  * Cast a vote for an issue, calculating quadratic voting cost
@@ -152,6 +160,28 @@ const castVote = (issueUuid: string, opposed: boolean) => {
     }
 }
 
+const spendCredits = (issueUuid: string, opposed: boolean) => {
+    const vote = participant.value.castedVotes.find(vote => vote.issueUuid === issueUuid);
+
+    if (!vote) {
+        console.error("Could not find vote for issue", issueUuid);
+        return;
+    }
+
+    const creditsSpent = Number(vote.creditsSpent.toFixed(2));
+    const newCredits = opposed ? creditsSpent - creditSpendingStep : creditsSpent + creditSpendingStep;
+    const votesWorth = Number(Math.sqrt(newCredits).toFixed(1));
+
+    if (remainingCredits.value - creditSpendingStep >= 0 && remainingCredits.value - creditSpendingStep <= maxCredits.value) {
+        remainingCredits.value = Number((remainingCredits.value - (opposed ? -creditSpendingStep : creditSpendingStep)).toFixed(2));
+        vote.creditsSpent = Number(newCredits.toFixed(2));
+        vote.numberOfVotes = Number(votesWorth.toFixed(1));
+    } else {
+        console.info("Not enough credits to spend");
+        return;
+    }
+}
+
 /**
  * Start continuous voting on an issue while pointer/mouse is held down
  * @param issueUuid - Issue to vote on
@@ -159,7 +189,7 @@ const castVote = (issueUuid: string, opposed: boolean) => {
  */
 const startVoting = (issueUuid: string, opposed: boolean) => {
     castVote(issueUuid, opposed);
-    intervals[issueUuid] = setInterval(() => castVote(issueUuid, opposed), intervalDuration);
+    // intervals[issueUuid] = setInterval(() => castVote(issueUuid, opposed), intervalDuration);
     return issueUuid;
 }
 

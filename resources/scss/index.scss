@@ -59,15 +59,35 @@ progress {
 
     width: 200px;
     height: 200px;
-    border: 1px solid black;
+    // border: 1px solid black;
     background-color: white;
     border-radius: 50%;
+
+    position: relative;
+
+    .credits-visualizer-next-vote {
+
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 2px solid black;
+        transform: rotate(45deg);
+
+        transition: transform 1.5s;
+
+
+        top: 0;
+        left: 0;
+
+        position: absolute;
+    }
 
     .credits-visualizer-inner {
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background-color: gray;
+        // background-color: gray;
         transform: rotate(45deg);
 
 

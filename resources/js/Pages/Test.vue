@@ -111,12 +111,70 @@ const votingRound = ref<VotingTypes.VotingRound>({
     }
 });
 
+
+
+/**
+ * Calculates how close the voting is to a 50–50 split between "for" and "against."
+ *
+ * @param {number} forVotes     - The total "for" votes (expected to be >= 0).
+ * @param {number} againstVotes - The total "against" votes (can be 0 or negative).
+ * @returns {number} A value between 0 and 1, where
+ *   0 means not polarized (100% vs. 0%),
+ *   1 means perfectly split (50% vs. 50%).
+ */
+function calculatePolarizationIndex(forVotes : number, againstVotes : number) {
+  // Convert negative against votes to positive for calculations
+  const absAgainst = Math.abs(againstVotes);
+  
+  // Calculate total votes
+  const total = forVotes + absAgainst;
+
+  // If no votes at all, return 0 (no polarization)
+  if (total === 0) {
+    return 0;
+  }
+
+  // Calculate percentages for logging
+  const forPercentage = (forVotes / total) * 100;
+  const againstPercentage = (absAgainst / total) * 100;
+  
+  // Log the distribution for debugging
+  console.log(`Distribution: ${forPercentage.toFixed(1)}% for / ${againstPercentage.toFixed(1)}% against`);
+
+  // Calculate proportion of "for" votes (between 0 and 1)
+  const p = forVotes / total;
+  
+  // Calculate how far the proportion is from 0.5 (perfect 50-50 split)
+  const distanceFromFifty = Math.abs(p - 0.5);
+  
+  // Convert distance to polarization index (0.5 is max distance, so divide by 0.5)
+  // Subtract from 1 to invert (so 1 means perfect split, 0 means no split)
+  let index = 1 - (distanceFromFifty / 0.5);
+  
+  // Ensure result is between 0 and 1
+  index = Math.max(0, Math.min(index, 1));
+
+  return index;
+}
+
+
 onMounted(() => {
 
     setupParticipant();
 
     maxCredits.value = votingRound.value.credits;
     remainingCredits.value = votingRound.value.credits;
+
+
+    
+    console.log(calculatePolarizationIndex(15, -15), 15, -15); // 0.0 --> not polarized (15 yes, 15 no)
+    console.log(calculatePolarizationIndex(14, -16), 14, -16); // 0.5 --> not polarized (14 yes, 16 no)
+    console.log(calculatePolarizationIndex(13, -17), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
+    console.log(calculatePolarizationIndex(45, -55), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
+    console.log(calculatePolarizationIndex(55, 45), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
+    console.log(calculatePolarizationIndex(48, -52), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
+    console.log(calculatePolarizationIndex(5, 30), 5, 30); // 0.8 --> not polarized (5 yes, 30 no)
+    console.log(calculatePolarizationIndex(0, 0), 0, 0); // 1.0 --> perfectly polarized (0 yes, 0 no)
 
 });
 

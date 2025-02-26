@@ -110,10 +110,10 @@ progress {
             transition: transform 1s, filter 1s;
 
             //filter make grayscale
-            filter: grayscale(100%);
+            // filter: grayscale(100%);
 
             &.negative {
-                transform: translate(-50%, -50%) rotate(180deg);
+                // transform: translate(-50%, -50%) rotate(180deg);
                 // filter: sepia(100%) saturate(300%) hue-rotate(320deg) brightness(0.8);
             }
 
@@ -169,14 +169,14 @@ progress {
         overflow-x: auto;
         max-width: 100%;
 
-        gap: 1rem;
+        gap: 3rem;
         padding: 1rem;
 
         .issue {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 8rem;
             padding: 1rem;
             border: 1px solid black;
             border-radius: 5px;

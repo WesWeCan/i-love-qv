@@ -22,19 +22,22 @@
 // 49    credits    = 7    vote 
 // 64    credits    = 8    vote 
 // 81    credits    = 9    vote 
-// 100   credits    = 10   vote 
+// 100   credits    = 10   vote
 
+
+// formula = x ^ 2
 
 
 
 import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';
 
 import DataOverview from '@/Components/DataOverview.vue';
+import VotesVisualizer from '@/Components/VotesVisualizer.vue';
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
 
-const maxCredits = ref(100);
-const remainingCredits = ref(100);
+const maxCredits = ref(10000);
+const remainingCredits = ref(10000);
 
 const issues = ref<VotingTypes.Issue[]>([
     {
@@ -101,7 +104,7 @@ const votingRound = ref<VotingTypes.VotingRound>({
     id: 1,
     uuid: 'voting-round-1',
     name: 'Wat moet er in de fruitschaal?',
-    credits: 100,
+    credits: 10000,
     issues: issues.value,
     options: {
         forceSpread: false,
@@ -133,9 +136,9 @@ const setupParticipant = () => {
 // Store active voting intervals for each issue
 const intervals: { [key: string]: number } = {};
 // Duration between vote casts in milliseconds
-const intervalDuration = 50;
+let intervalDuration = 150;
 // Amount to increment/decrement votes by
-const votingStep = .25;
+const votingStep = 1;
 
 const creditSpendingStep = 1;
 
@@ -199,7 +202,7 @@ const spendCredits = (issueUuid: string, opposed: boolean) => {
  */
 const startVoting = (issueUuid: string, opposed: boolean) => {
     castVote(issueUuid, opposed);
-    // intervals[issueUuid] = setInterval(() => castVote(issueUuid, opposed), intervalDuration);
+    intervals[issueUuid] = setInterval(() => castVote(issueUuid, opposed), intervalDuration);
     return issueUuid;
 }
 
@@ -237,7 +240,7 @@ const stopVoting = (issueUuid: string) => {
                 <div class="issue">
                     <h2>{{ issue.text }}</h2>
 
-                    <CreditsVisualizer
+                    <VotesVisualizer
                         :votes="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
                         :credits="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
                         :maxCredits="maxCredits" :isPool="false" :emoji="issue.emoji" />

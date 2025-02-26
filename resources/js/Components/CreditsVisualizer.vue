@@ -7,6 +7,7 @@
         credits: number;
         maxCredits: number;
         isPool: boolean;
+        emoji: string;
     }>();
 
 
@@ -43,6 +44,7 @@
     <div class="credits-visualizer-inner" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
         :style="'transform: scale(' + (scale) + ')'"
         >
+        <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }">{{ props.emoji }}</div>
     </div>
     <div class="credits-visualizer-next-vote"
         :style="'transform: scale(' + (scaleNextVote) + ')'"

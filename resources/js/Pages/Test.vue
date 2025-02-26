@@ -38,44 +38,54 @@ const remainingCredits = ref(100);
 
 const issues = ref<VotingTypes.Issue[]>([
     {
-        text: 'Appel',
+        text: '🍎 Appel',
         uuid: 'issue-1',
+        emoji: '🍎'
     },
     {
-        text: 'Peer',
+        text: '🍐 Peer',
         uuid: 'issue-2',
+        emoji: '🍐'
     },
     {
-        text: 'Banaan',
+        text: '🍌 Banaan',
         uuid: 'issue-3',
+        emoji: '🍌'
     },
     {
-        text: 'Sinaasappel',
+        text: '🍊 Sinaasappel',
         uuid: 'issue-4',
+        emoji: '🍊'
     },
     {
-        text: 'Mandarijn',
+        text: '🍊 Mandarijn',
         uuid: 'issue-5',
+        emoji: '🍊'
     },
     {
-        text: 'Kiwi',
+        text: '🥝 Kiwi',
         uuid: 'issue-6',
+        emoji: '🥝'
     },
     {
-        text: 'Druif',
+        text: '🍇 Druif',
         uuid: 'issue-7',
+        emoji: '🍇'
     },
     {
-        text: 'Aardbei',
+        text: '🍓 Aardbei',
         uuid: 'issue-8',
+        emoji: '🍓'
     },
     {
-        text: 'Framboos',
+        text: '🫐 Framboos',
         uuid: 'issue-9',
+        emoji: '🫐'
     },
     {
-        text: 'Mango',
+        text: '🥭 Mango',
         uuid: 'issue-10',
+        emoji: '🥭'
     },
 ]);
 
@@ -217,7 +227,7 @@ const stopVoting = (issueUuid: string) => {
                 <span>Credits left: {{ remainingCredits }}</span>
 
                 <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
-                    :isPool="true" />
+                    :isPool="true" :emoji="'🤍'" />
 
             </div>
 
@@ -230,7 +240,7 @@ const stopVoting = (issueUuid: string) => {
                     <CreditsVisualizer
                         :votes="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0"
                         :credits="participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.creditsSpent || 0"
-                        :maxCredits="maxCredits" :isPool="false" />
+                        :maxCredits="maxCredits" :isPool="false" :emoji="issue.emoji" />
 
 
                     <div class="buttons">

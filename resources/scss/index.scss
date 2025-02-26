@@ -71,7 +71,7 @@ progress {
         height: 100%;
         border-radius: 50%;
         background-color: transparent;
-        border: 2px solid black;
+        // border: 2px solid black;
         transform: rotate(45deg);
 
         transition: transform 1.5s;
@@ -95,16 +95,45 @@ progress {
 
         transform: scale(1);
 
+        position: relative;
+
+        .emoji {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25rem;
+            color: white;
+
+            transform-origin: center;
+
+            transition: transform 1s, filter 1s;
+
+            //filter make grayscale
+            filter: grayscale(100%);
+
+            &.negative {
+                transform: translate(-50%, -50%) rotate(180deg);
+                // filter: sepia(100%) saturate(300%) hue-rotate(320deg) brightness(0.8);
+            }
+
+            &.positive {
+                transform: translate(-50%, -50%) rotate(0deg);
+                // filter: sepia(100%) saturate(300%) hue-rotate(100deg) brightness(1);
+
+            }
+        }
+
         &.negative {
-            background-color: red;
+            // background-color: red;
         }
 
         &.positive {
-            background-color: green;
+            // background-color: green;
         }
 
         &.pool {
-            background-color: blue!important;
+            // background-color: blue!important;
         }
     }
 

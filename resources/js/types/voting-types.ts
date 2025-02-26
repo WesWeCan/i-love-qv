@@ -1,6 +1,7 @@
 export interface Issue {
     text: string;
     uuid: string;
+    emoji: string;
 };
 
 

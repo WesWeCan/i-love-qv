@@ -8,7 +8,6 @@
         maxCredits: number;
         isPool: boolean;
         emoji: string;
-        useEmoji: boolean;
     }>();
 
 
@@ -35,49 +34,27 @@
         return 0.15 + ((currentVotes / maxVotes) * 0.85);
     });
 
-
-const voteEmoji = computed(() => {
-
-    if(props.useEmoji){
-        return props.emoji;
-    }
-
-
-    if (props.votes === 0) {
-        return '😐';
-    }
-
-    if (props.votes > 0) {
-        return '🙂';
-    }
-
-    if (props.votes < 0) {
-        return '☹️';
-    }
-
-
-});
-
-
 </script>
 
 <template>
 
 
-<div class="votes-visualizer">
-    <div class="votes-visualizer-inner" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
+<div class="credits-visualizer">
+    <div class="credits-visualizer-inner" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
         :style="'transform: scale(' + (scale) + ')'"
         >
-        <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }" v-if="!props.isPool">
-            {{ voteEmoji }}
-        </div>
+        <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }" v-if="!props.isPool">{{ 
+            props.votes === 0 ? '😐' : 
+            props.votes > 0 ? ['😐','🙂','☺️','😊','😄','😃','😀','😁','😆','🤗'][Math.min(Math.floor(props.votes/2), 9)] :
+            ['😐','🙁','☹️','😟','😔','😣','😖','😫','😩','😢'][Math.min(Math.floor(Math.abs(props.votes)/2), 9)]
+        }}</div>
         <div class="emoji" v-else>🤍</div>
     </div>
-    <!-- <div class="votes-visualizer-next-vote"
+    <div class="credits-visualizer-next-vote"
         :style="'transform: scale(' + (scaleNextVote) + ')'"
-    ></div> -->
+    ></div>
 
-    <!-- {{ scale }} -->
+    {{ scale }}
 </div>
 
 

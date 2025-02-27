@@ -11,29 +11,31 @@
     }>();
 
 
+    const minimumScale = 0.0;
+
     const scale = computed(() => {
         const rawScale = props.credits / props.maxCredits;
-        return 0.15 + (rawScale * 0.85);
+        return minimumScale + (rawScale * (1-minimumScale));
     });
 
 
-    const scaleNextVote = computed(() => {
-        const currentVotes = Math.floor(Math.abs(props.votes));
-        const currentVoteCredits = Math.pow(currentVotes + 1, 2);
-        const nextVoteCredits = Math.pow(currentVotes + 2, 2);
+    // const scaleNextVote = computed(() => {
+    //     const currentVotes = Math.floor(Math.abs(props.votes));
+    //     const currentVoteCredits = Math.pow(currentVotes + 1, 2);
+    //     const nextVoteCredits = Math.pow(currentVotes + 2, 2);
         
-        if (props.votes === 0 && props.credits === 0) {
-            return 0.15;
-        }
+    //     if (props.votes === 0 && props.credits === 0) {
+    //         return minimumScale;
+    //     }
         
-        const baseScale = currentVoteCredits / props.maxCredits;
-        const nextScale = nextVoteCredits / props.maxCredits;
+    //     const baseScale = currentVoteCredits / props.maxCredits;
+    //     const nextScale = nextVoteCredits / props.maxCredits;
         
-        if (props.credits >= nextVoteCredits) {
-            return 0.15 + (nextScale * 0.85);
-        }
-        return 0.15 + (baseScale * 0.85);
-    });
+    //     if (props.credits >= nextVoteCredits) {
+    //         return minimumScale + (nextScale * (1-minimumScale));
+    //     }
+    //     return minimumScale + (baseScale * (1-minimumScale));
+    // });
 
 </script>
 
@@ -44,21 +46,11 @@
     <div class="credits-visualizer-inner" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
         :style="'transform: scale(' + (scale) + ')'"
         >
-
-     
-        <!-- <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }">{{ 
-            props.votes === 0 ? '😐' : 
-            props.votes > 0 ? ['😐','🙂','☺️','😊','😄','😃','😀','😁','😆','🤗'][Math.min(Math.floor(props.votes/2), 9)] :
-            ['😐','🙁','☹️','😟','😔','😣','😖','😫','😩','😢'][Math.min(Math.floor(Math.abs(props.votes)/2), 9)]
-        }}</div> -->
-
-        <div class="emoji" >🤍</div>
+        <div class="emoji" >{{ props.emoji }}</div>
     </div>
-    <div class="credits-visualizer-next-vote"
+    <!-- <div class="credits-visualizer-next-vote"
         :style="'transform: scale(' + (scaleNextVote) + ')'"
-    ></div>
-
-    {{ scale }}
+    ></div> -->
 </div>
 
 

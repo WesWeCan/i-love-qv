@@ -36,57 +36,60 @@ import VotesVisualizer from '@/Components/VotesVisualizer.vue';
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
 
-const maxCredits = ref(10000);
-const remainingCredits = ref(10000);
+
+const numCredits = 10000;
+
+const maxCredits = ref(numCredits);
+const remainingCredits = ref(numCredits);
 
 const issues = ref<VotingTypes.Issue[]>([
     {
-        text: '🍎 Appel',
+        text: 'Appel',
         uuid: 'issue-1',
         emoji: '🍎'
     },
     {
-        text: '🍐 Peer',
+        text: 'Peer',
         uuid: 'issue-2',
         emoji: '🍐'
     },
     {
-        text: '🍌 Banaan',
+        text: 'Banaan',
         uuid: 'issue-3',
         emoji: '🍌'
     },
     {
-        text: '🍊 Sinaasappel',
+        text: 'Sinaasappel',
         uuid: 'issue-4',
         emoji: '🍊'
     },
     {
-        text: '🍊 Mandarijn',
+        text: 'Mandarijn',
         uuid: 'issue-5',
         emoji: '🍊'
     },
     {
-        text: '🥝 Kiwi',
+        text: 'Kiwi',
         uuid: 'issue-6',
         emoji: '🥝'
     },
     {
-        text: '🍇 Druif',
+        text: 'Druif',
         uuid: 'issue-7',
         emoji: '🍇'
     },
     {
-        text: '🍓 Aardbei',
+        text: 'Aardbei',
         uuid: 'issue-8',
         emoji: '🍓'
     },
     {
-        text: '🫐 Framboos',
+        text: 'Framboos',
         uuid: 'issue-9',
         emoji: '🫐'
     },
     {
-        text: '🥭 Mango',
+        text: 'Mango',
         uuid: 'issue-10',
         emoji: '🥭'
     },
@@ -104,7 +107,7 @@ const votingRound = ref<VotingTypes.VotingRound>({
     id: 1,
     uuid: 'voting-round-1',
     name: 'Wat moet er in de fruitschaal?',
-    credits: 10000,
+    credits: numCredits,
     issues: issues.value,
     options: {
         forceSpread: false,
@@ -166,15 +169,16 @@ onMounted(() => {
     remainingCredits.value = votingRound.value.credits;
 
 
-    
-    console.log(calculatePolarizationIndex(15, -15), 15, -15); // 0.0 --> not polarized (15 yes, 15 no)
-    console.log(calculatePolarizationIndex(14, -16), 14, -16); // 0.5 --> not polarized (14 yes, 16 no)
-    console.log(calculatePolarizationIndex(13, -17), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
-    console.log(calculatePolarizationIndex(45, -55), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
-    console.log(calculatePolarizationIndex(55, 45), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
-    console.log(calculatePolarizationIndex(48, -52), 13, -17); // 0.6 --> not polarized (13 yes, 17 no)
-    console.log(calculatePolarizationIndex(5, 30), 5, 30); // 0.8 --> not polarized (5 yes, 30 no)
-    console.log(calculatePolarizationIndex(0, 0), 0, 0); // 1.0 --> perfectly polarized (0 yes, 0 no)
+    console.table([
+        { input: '15, -15', polarization: calculatePolarizationIndex(15, -15) },
+        { input: '14, -16', polarization: calculatePolarizationIndex(14, -16) },
+        { input: '13, -17', polarization: calculatePolarizationIndex(13, -17) },
+        { input: '45, -55', polarization: calculatePolarizationIndex(45, -55) },
+        { input: '55, 45', polarization: calculatePolarizationIndex(55, 45)    },
+        { input: '48, -52', polarization: calculatePolarizationIndex(48, -52)  },
+        { input: '5, 30', polarization: calculatePolarizationIndex(5, 30)    },
+        { input: '0, 0', polarization: calculatePolarizationIndex(0, 0) }
+    ]);
 
 });
 
@@ -187,7 +191,6 @@ const setupParticipant = () => {
             creditsSpent: 0,
         });
     }
-
 }
 
 
@@ -231,6 +234,8 @@ const castVote = (issueUuid: string, opposed: boolean) => {
     }
 }
 
+
+// We don't use it because you BUY votes and not spend credits
 const spendCredits = (issueUuid: string, opposed: boolean) => {
     const vote = participant.value.castedVotes.find(vote => vote.issueUuid === issueUuid);
 

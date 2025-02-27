@@ -6,13 +6,21 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Test', [
+    return Inertia::render('Voting', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+
+Route::get('/result', function () {
+    return Inertia::render('Result');
+});
+
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

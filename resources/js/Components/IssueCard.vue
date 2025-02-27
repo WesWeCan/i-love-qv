@@ -72,7 +72,7 @@ const issueVotingData = computed(() => {
             <span @click="flipped = !flipped" class="issue-card-emoji flip">🔁</span>
         </div>
         <div class="issue-card-visualizer">
-            <VotesVisualizer :votes="issueVotingData.numberOfVotes" :credits="issueVotingData.creditsSpent" :maxCredits="votingRound.credits" :isPool="false" :emoji="props.issue.emoji" :use-emoji="false" />
+            <VotesVisualizer :votes="issueVotingData.numberOfVotes" :credits="issueVotingData.creditsSpent" :maxCredits="votingRound.credits" :isPool="false" :emoji="props.issue.emoji" :use-emoji="true" />
         </div>
         <div class="issue-card-footer">
             

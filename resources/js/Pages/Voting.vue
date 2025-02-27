@@ -7,7 +7,7 @@ import { exampleIssues } from '@/Assets/ExampleIssues';
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import Tutorial from '@/Components/Tutorial.vue';
 import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';
-import IssueCard from '@/Components/IssueCard.vue';
+import ResultVisualizer from '@/Components/ResultVisualizer.vue';
 import IssueCards from '@/Components/IssueCards.vue';
 
 
@@ -124,6 +124,11 @@ const onCastVoteEvent = (event : {issueUuid: string, opposed: boolean}) => {
 
         <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
 
+    </div>
+
+
+    <div class="result-container">
+        <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
     </div>
 
 

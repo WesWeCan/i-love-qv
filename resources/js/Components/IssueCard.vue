@@ -79,13 +79,13 @@ const issueVotingData = computed(() => {
             <button @pointerdown="startVoting(issue.uuid, true)" @pointerup="stopVoting(issue.uuid)"
                         @pointerleave="stopVoting(issue.uuid)">
                     
-                        {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) > 0 ? 'Fewer' : 'Vote against' }}
+                        {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) > 0 ? '➖' : '➖' }}
                     
                     </button>
 
                         <button @pointerdown="startVoting(issue.uuid, false)" @pointerup="stopVoting(issue.uuid)"
                             @pointerleave="stopVoting(issue.uuid)">
-                            {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 ? 'Fewer' : 'Vote in favor' }}
+                            {{ (participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) < 0 ? '➕' : '➕' }}
                         </button>
         </div>
         </div>

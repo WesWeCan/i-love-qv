@@ -307,6 +307,20 @@ footer {
         justify-content: space-between;
         align-self: flex-end;
         justify-self: flex-end;
+
+
+        button {
+            padding: .5rem;
+            background-color: transparent;
+            border: 2px solid gray;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color .2s;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
     }
 
     &.neutral {
@@ -322,6 +336,8 @@ footer {
             border: 5px solid green;
             background-color: rgba(0, 128, 0, 0.1);
         }
+
+     
     }
 
     &.negative {

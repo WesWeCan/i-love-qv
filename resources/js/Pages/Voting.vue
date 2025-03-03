@@ -24,6 +24,7 @@ const votingRound = ref<VotingTypes.VotingRound>({
     name: 'What needs to be in the fruit basket?',
     description: "We want to know what fruit we need to buy to make a fruit basket.",
     credits: numCredits,
+    emoji: '🤍',
     issues: exampleIssues.sort(() => 0.5 - Math.random()),
     options: {
         forceSpread: false,

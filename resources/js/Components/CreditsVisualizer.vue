@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    import { computed } from 'vue';
+    import { Flyer } from '@/types/voting-types';
+import { computed, onMounted, ref, watch } from 'vue';
 
 
     const props = defineProps<{
@@ -18,6 +19,18 @@
         return minimumScale + (rawScale * (1-minimumScale));
     });
 
+    const percentageLeft = computed(() => {
+
+
+        let percentageLeft = (props.credits / props.maxCredits) * 100;
+
+
+        if( percentageLeft > 10){
+            return Math.floor(percentageLeft);
+        }
+
+        return Number(percentageLeft.toFixed(2));
+    });
 
     // const scaleNextVote = computed(() => {
     //     const currentVotes = Math.floor(Math.abs(props.votes));
@@ -37,6 +50,50 @@
     //     return minimumScale + (baseScale * (1-minimumScale));
     // });
 
+
+
+watch(() => props.credits, (newCredits, oldCredits) => {
+    const creditChange = Math.abs(newCredits - oldCredits);
+    addFlyer(creditChange, newCredits > oldCredits ? 'in' : 'out');
+});
+
+
+const flyers = ref<Flyer[]>([]);
+
+
+onMounted(async () => {
+   
+});
+
+
+const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
+    const numFlyers = flyers.value.length;
+    const currentIndex = flyers.value.length;
+
+    console.log(addOrRemove)
+
+    if(addOrRemove > 15){
+        addOrRemove = 10;
+    }
+
+    for (let i = 0; i < addOrRemove; i++) {
+        flyers.value.push({
+            index: currentIndex + i,
+            show: true,
+            direction: direction
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 125));
+
+        setTimeout(() => {
+            flyers.value[currentIndex + i].show = false;
+        }, 1000);
+    }
+}
+
+
+
+
 </script>
 
 <template>
@@ -48,9 +105,26 @@
         >
         <div class="emoji" >{{ props.emoji }}</div>
     </div>
-    <!-- <div class="credits-visualizer-next-vote"
-        :style="'transform: scale(' + (scaleNextVote) + ')'"
-    ></div> -->
+
+    <template v-for="(flyer, index) in flyers" :key="index">
+    <div class="credits-visualizer-flying" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
+        :style="'transform: scale(' + (scale) + ')'"
+        v-if="flyer.show"
+        >
+        <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }" 
+            :style="'animation-direction: ' + (flyer.direction === 'out' ? 'normal' : 'reverse') + ';'"
+            >
+           {{ props.emoji }}
+        </div>
+    </div>
+    </template>
+
+
+</div>
+
+
+<div class="percentage-left">
+    Influence left: {{ percentageLeft }}%
 </div>
 
 

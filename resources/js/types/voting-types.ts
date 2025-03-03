@@ -75,6 +75,7 @@ export interface VotingRound {
     name: string;
     description?: string;
 
+    emoji: string;
     credits: number;
     issues: Issue[];
     options: VotingRoundOptions;
@@ -115,3 +116,8 @@ export interface VoteResult {
 
 
 
+export interface Flyer {
+    index: number;
+    show: boolean;
+    direction: 'in' | 'out';
+}

@@ -167,7 +167,9 @@ footer {
     }
 }
 
-
+.percentage-left {
+    text-align: center;
+}
 
 
 .credits-visualizer {
@@ -196,6 +198,47 @@ footer {
             font-size: 100cqi;
             pointer-events: none;
         }
+    }
+
+    .credits-visualizer-flying {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 0%;
+        left: 0%;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+
+            text-shadow: 4px 4px 5px black;
+
+            animation: flyOutCredits .75s ease-in-out 0s 1 forwards;
+        }
+    }
+}
+
+@keyframes flyOutCredits {
+    0% {
+        transform: translateY(15%) scale(.75);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(30%) scale(.38);
+        opacity: .58;
+    }
+    100% {
+        transform: translateY(55%) scale(.15);
+        opacity: 0;
     }
 }
 
@@ -227,9 +270,49 @@ footer {
             pointer-events: none;
         }
     }
+
+
+    .votes-visualizer-flying {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 0%;
+        left: 0%;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+
+            text-shadow: 4px 4px 5px black;
+
+            animation: flyIn .5s ease-in-out 0s 1 forwards;
+        }
+    }
 }
 
-
+@keyframes flyIn {
+    0% {
+        transform: translateY(-190%) scale(.3);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-145%) scale(.58);
+        opacity: .58;
+    }
+    100% {
+        transform: translateY(-25%) scale(.3);
+        opacity: 0;
+    }
+}
 
 
 .issue-cards {
@@ -342,7 +425,7 @@ footer {
 
     &.negative {
         .front, .back {
-            border: 4px solid red;
+            border: 4px solid purple;
             background-color: rgba(128, 0, 0, 0.1);
         }
     }

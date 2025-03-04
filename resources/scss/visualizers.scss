@@ -1,0 +1,182 @@
+.result-visualizer {
+    container-type: inline-size;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    width: 600px;
+    gap: 0rem;
+    padding: 2rem;
+
+    .result {
+        flex: 1;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        padding: 1rem;
+
+        &.neutral {
+            .emoji {
+                filter: grayscale(100%);
+            }
+        }
+
+        &.negative {
+            .emoji {
+                border: 2px solid red;
+                background-color: rgba(128, 0, 0, 0.1);
+                border-radius: 50%;
+            }
+        }
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: font-size 0.3s ease;
+            font-size: calc(15cqi * (.25 + var(--scale, 1)));
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+    }
+}
+
+.credits-visualizer {
+    container-type: inline-size;
+    width: clamp(200px, 30cqi, 300px);
+    height: clamp(200px, 30cqi, 300px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: blue;
+
+    .credits-visualizer-inner {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+        }
+    }
+
+    .credits-visualizer-poof {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        animation: boom .75s ease-in-out 0s 1 forwards;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+        }
+    }
+
+    .credits-visualizer-flying {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 0%;
+        left: 0%;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+
+            text-shadow: 4px 4px 5px black;
+
+            animation: flyOutCredits .75s ease-in-out 0s 1 forwards;
+        }
+    }
+}
+
+
+
+.votes-visualizer {
+    container-type: inline-size;
+    width: 80%;
+    aspect-ratio: 1/1;
+   
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // background-color: blue;
+
+    .votes-visualizer-inner {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+        }
+    }
+
+
+    .votes-visualizer-flying {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: 0%;
+        left: 0%;
+
+        .emoji {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100cqi;
+            pointer-events: none;
+
+            text-shadow: 4px 4px 5px black;
+
+            animation: flyIn .5s ease-in-out 0s 1 forwards;
+        }
+    }
+}

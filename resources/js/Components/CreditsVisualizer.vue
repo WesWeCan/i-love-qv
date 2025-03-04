@@ -70,7 +70,7 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
     const numFlyers = flyers.value.length;
     const currentIndex = flyers.value.length;
 
-    console.log(addOrRemove)
+    // console.log(addOrRemove)
 
     if(addOrRemove > 15){
         addOrRemove = 10;

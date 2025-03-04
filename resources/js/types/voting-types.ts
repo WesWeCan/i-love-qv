@@ -16,7 +16,7 @@ export interface IssueVote {
 
 
 export interface Participant {    
-    name: string | null;
+    name: string;
     userUuid: string;
     castedVotes: IssueVote[];
 
@@ -80,7 +80,7 @@ export interface VotingRound {
     issues: Issue[];
     options: VotingRoundOptions;
 
-    votes?: Vote[];
+    participants?: Participant[];
 
     created_at?: string;
     updated_at?: string;

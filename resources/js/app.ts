@@ -1,6 +1,7 @@
 // import '../css/app.css';
 import "../scss/index.scss";
 import './bootstrap';
+import 'vue3-emoji-picker/css'
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

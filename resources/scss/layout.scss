@@ -1,0 +1,40 @@
+body {
+    // padding: 1rem;
+    font-family: sans-serif;
+    // max-width: 800px;
+    margin: 0 auto;
+
+    overscroll-behavior-x: none;
+
+    font-family: 'Assistant', sans-serif;
+}
+
+.front-layout {
+    display: flex;
+    flex-direction: column;
+
+    padding: 2rem;
+
+    @media screen and (max-width: 1200px) {
+        padding: 1rem;
+    }
+
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+        opacity: .5;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}

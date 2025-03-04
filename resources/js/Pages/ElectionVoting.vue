@@ -9,6 +9,7 @@ import Tutorial from '@/Components/Tutorial.vue';
 import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';
 import ResultVisualizer from '@/Components/ResultVisualizer.vue';
 import IssueCards from '@/Components/IssueCards.vue';
+import { useForm, usePage } from '@inertiajs/vue3';
 
 
 
@@ -18,23 +19,39 @@ const maxCredits = ref(-1);
 const remainingCredits = ref(-1);
 
 
-const votingRound = ref<VotingTypes.VotingRound>({
-    id: 1,
-    uuid: 'voting-round-1',
-    name: 'What needs to be in the fruit basket?',
-    description: "We want to know what fruit we need to buy to make a fruit basket.",
-    credits: numCredits,
-    emoji: '🤍',
-    issues: exampleIssues.sort(() => 0.5 - Math.random()),
-    options: {
-        forceSpread: false,
-    }
-});
+/**
+ * Generates a random UUID.
+ * 
+ * @returns {string} The generated UUID.
+ */
+ const createUUID = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
+
+// const votingRound = ref<VotingTypes.VotingRound>({
+//     id: 1,
+//     uuid: 'voting-round-1',
+//     name: 'What needs to be in the fruit basket?',
+//     description: "We want to know what fruit we need to buy to make a fruit basket.",
+//     credits: numCredits,
+//     emoji: '🤍',
+//     issues: exampleIssues.sort(() => 0.5 - Math.random()),
+//     options: {
+//         forceSpread: false,
+//     }
+// });
+
+const page = usePage();
+
+const votingRound = ref<VotingTypes.VotingRound>(page.props.election!);
 
 const participant = ref<VotingTypes.Participant>(
     {
-        name: null,
-        userUuid: 'user-1',
+        name: "Voter",
+        userUuid: createUUID(),
         castedVotes: [],
     }
 );
@@ -53,6 +70,9 @@ const setupParticipant = () => {
 }
 
 onMounted(() => {
+
+    // shuffle the issues
+    votingRound.value.issues = votingRound.value.issues.sort(() => 0.5 - Math.random());
 
     setupParticipant();
 
@@ -101,6 +121,36 @@ const onCastVoteEvent = (event : {issueUuid: string, opposed: boolean}) => {
 }
 
 
+const form = useForm({
+    name: "",
+    remainingCredits: -1,
+    numberOfVotes: -1,
+    creditsSpent: -1,
+    votingRoundUuid: "",
+    castedVotes: [] as VotingTypes.IssueVote[],
+})
+
+const submitVote = () => {
+    
+        console.log(participant.value);
+
+        form.name = participant.value.name ?? "";
+        form.remainingCredits = remainingCredits.value;
+
+
+        form.creditsSpent = participant.value.castedVotes.reduce((acc, curr) => acc + curr.creditsSpent, 0);
+       
+        
+        form.votingRoundUuid = votingRound.value.uuid;
+
+        form.castedVotes = participant.value.castedVotes;
+
+
+        console.log(form);
+        form.post(route('vote.store'));
+
+}
+
 </script>
 
 
@@ -117,10 +167,9 @@ const onCastVoteEvent = (event : {issueUuid: string, opposed: boolean}) => {
             <p v-if="votingRound.description">{{ votingRound.description }}</p>
         </header>
 
-
         <div class="influence-pool">
             <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
-                    :isPool="true" :emoji="'🤍'" />
+                    :isPool="true" :emoji="votingRound.emoji" />
         </div>
 
         <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
@@ -132,6 +181,10 @@ const onCastVoteEvent = (event : {issueUuid: string, opposed: boolean}) => {
         <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
     </div>
 
+    <br/><br/>
+    <button @click="submitVote">Submit your vote</button>
+
+    {{ $page.props.errors }}
 
 </FrontLayout>
 

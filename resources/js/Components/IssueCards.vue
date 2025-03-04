@@ -38,9 +38,10 @@ onMounted(() => {
 <template>
     <div ref="cardsContainer" class="issue-cards" :class="{ visible: isVisible }">
 
-<template v-for="(issue, index) in votingRound.issues" :key="index">
-    <IssueCard :votingRound="votingRound" :issue="issue" :participant="participant" @cast-vote="emit('castVote', $event)" />
-</template>
+        <template v-for="(issue, index) in votingRound.issues" :key="index">
+            <IssueCard :votingRound="votingRound" :issue="issue" :participant="participant"
+                @cast-vote="emit('castVote', $event)" />
+        </template>
 
-</div>
+    </div>
 </template>

@@ -1,3 +1,5 @@
+import { VotingRound } from "./voting-types";
+
 export interface User {
     id: number;
     name: string;
@@ -11,4 +13,7 @@ export type PageProps<
     auth: {
         user: User;
     };
+
+    election?: VotingRound;
+    myVoteCode?: string;
 };

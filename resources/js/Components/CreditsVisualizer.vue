@@ -106,6 +106,12 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
         <div class="emoji" >{{ props.emoji }}</div>
     </div>
 
+    <div class="credits-visualizer-poof" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
+        v-if="props.credits === 0"
+        >
+        <div class="emoji" >💥</div>
+    </div>
+
     <template v-for="(flyer, index) in flyers" :key="index">
     <div class="credits-visualizer-flying" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
         :style="'transform: scale(' + (scale) + ')'"

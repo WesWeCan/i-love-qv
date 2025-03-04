@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import * as VotingTypes from '@/types/voting-types';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import VotesVisualizer from './VotesVisualizer.vue';
+import * as d3 from 'd3';
 
 const props = defineProps<{
     participants: VotingTypes.Participant[];
     votingRound: VotingTypes.VotingRound;
 }>();
 
+const containerRef = ref<HTMLElement>();
+const simulation = ref<d3.Simulation<IssueResult, any>>();
+const nodes = ref<IssueResult[]>([]);
+const isLineMode = ref(false);
 
 interface IssueResult {
     issue: VotingTypes.Issue;
@@ -17,6 +22,10 @@ interface IssueResult {
     votes: VotingTypes.IssueVote[];
     isInFavor: boolean;
     votePercentage: number;
+    x?: number;
+    y?: number;
+    fx?: number | null;
+    fy?: number | null;
 }
 
 interface ResultOutput {
@@ -35,14 +44,16 @@ const results = computed<ResultOutput>(() => {
         const netVotes = votes.reduce((sum, v) => sum + v.numberOfVotes, 0);
         const grossVotes = votes.reduce((sum, v) => sum + Math.abs(v.numberOfVotes), 0);
         
-        return {
+        const result: IssueResult = {
             issue,
             totalCredits,
             netVotes,
             grossVotes,
             votes,
-            isInFavor: netVotes > 0
+            isInFavor: netVotes > 0,
+            votePercentage: 0
         };
+        return result;
     });
 
     const totalNetVotes = issueResults.reduce((sum, r) => sum + Math.abs(r.netVotes), 0);
@@ -56,28 +67,280 @@ const results = computed<ResultOutput>(() => {
     };
 });
 
+const getNodeRadius = (node: IssueResult) => Math.max(35, (node.votePercentage * 40) + 25);
 
+const getSortedNodes = () => {
+    const sortedPositive = nodes.value
+        .filter(n => n.netVotes > 0)
+        .sort((a, b) => b.netVotes - a.netVotes);
+    const sortedNegative = nodes.value
+        .filter(n => n.netVotes < 0)
+        .sort((a, b) => b.netVotes - a.netVotes); // Changed to sort by absolute value
+    const neutral = nodes.value.filter(n => n.netVotes === 0);
+    return { sortedPositive, sortedNegative, neutral };
+};
 
+const updateSimulation = () => {
+    if (!containerRef.value || !simulation.value) return;
+    
+    const width = containerRef.value.clientWidth;
+    const height = containerRef.value.clientHeight;
+    
+    const currentNodes = nodes.value;
+    const newResults = results.value.issues;
+    
+    nodes.value = newResults.map(result => {
+        const existingNode = currentNodes.find(n => n.issue.uuid === result.issue.uuid);
+        return {
+            ...result,
+            x: existingNode?.x ?? width / 2,
+            y: existingNode?.y ?? height / 2
+        };
+    });
+
+    const forceX = isLineMode.value ? 
+        d3.forceX<IssueResult>().x(d => {
+            const { sortedPositive, sortedNegative, neutral } = getSortedNodes();
+            const allNodes = [...sortedPositive, ...neutral, ...sortedNegative];
+            const index = allNodes.indexOf(d);
+            const spacing = width / (allNodes.length + 1);
+            return spacing * (index + 1);
+        }).strength(1) :
+        d3.forceX<IssueResult>().x(d => {
+            const { sortedPositive, sortedNegative, neutral } = getSortedNodes();
+            const posIndex = sortedPositive.indexOf(d);
+            const negIndex = sortedNegative.indexOf(d);
+            const neutralIndex = neutral.indexOf(d);
+            
+            if (posIndex !== -1) return (width * 0.25) + (posIndex * width * 0.1);
+            if (negIndex !== -1) return (width * 0.75) - (negIndex * width * 0.1);
+            if (neutralIndex !== -1) return width / 2;
+            return width / 2;
+        }).strength(0.8);
+
+    const forceY = isLineMode.value ?
+        d3.forceY<IssueResult>().y(height / 2).strength(1) :
+        d3.forceY<IssueResult>().y(d => {
+            if (d.netVotes === 0) return height / 2;
+            return height / 2 + (d.votePercentage * height * 0.3 * (d.netVotes > 0 ? -1 : 1));
+        }).strength(0.5);
+
+    simulation.value
+        .nodes(nodes.value)
+        .force('charge', d3.forceManyBody().strength(isLineMode.value ? -50 : -200))
+        .force('collide', d3.forceCollide<IssueResult>().radius(d => getNodeRadius(d) * 1.2).strength(1))
+        .force('x', forceX)
+        .force('y', forceY)
+        .alpha(0.5)
+        .restart();
+};
+
+const initializeSimulation = () => {
+    if (!containerRef.value) return;
+    
+    const width = containerRef.value.clientWidth;
+    const height = containerRef.value.clientHeight;
+    
+    nodes.value = results.value.issues.map(issue => ({
+        ...issue,
+        x: width / 2,
+        y: height / 2
+    }));
+
+    if (simulation.value) simulation.value.stop();
+
+    simulation.value = d3.forceSimulation<IssueResult>(nodes.value)
+        .on('tick', () => {
+            nodes.value.forEach(node => {
+                if (node.x !== undefined) {
+                    node.x = Math.max(getNodeRadius(node), Math.min(width - getNodeRadius(node), node.x));
+                }
+                if (node.y !== undefined) {
+                    node.y = Math.max(getNodeRadius(node), Math.min(height - getNodeRadius(node), node.y));
+                }
+            });
+            nodes.value = [...nodes.value];
+        });
+    
+    updateSimulation();
+};
+
+const toggleMode = () => {
+    isLineMode.value = !isLineMode.value;
+    updateSimulation();
+};
+
+onMounted(() => {
+    initializeSimulation();
+    window.addEventListener('resize', initializeSimulation);
+});
+
+onUnmounted(() => {
+    if (simulation.value) {
+        simulation.value.stop();
+    }
+    window.removeEventListener('resize', initializeSimulation);
+});
+
+watch(() => results.value, updateSimulation, { deep: true });
+
+const getNodeZIndex = (node: IssueResult) => {
+    const { sortedPositive, sortedNegative, neutral } = getSortedNodes();
+    const allNodes = [...sortedPositive, ...neutral, ...sortedNegative];
+    return allNodes.length - allNodes.indexOf(node);
+};
 </script>
 
 <template>
-
-    <div class="result-visualizer">
-
-        <template v-for="result in results.issues">
-        
-            <div class="result" :class="{ 'neutral' : result.netVotes === 0, 'positive' : result.netVotes > 0, 'negative' : result.netVotes < 0 }">
-
-                <div class="emoji" :style="{ '--scale': result.votePercentage }">
-                    {{ result.issue.emoji }}
+    <div class="visualizer-container">
+        <button class="mode-toggle" @click="toggleMode">
+            {{ isLineMode ? 'Switch to Messy Mode' : 'Switch to Line Mode' }}
+        </button>
+        <div class="result-visualizer" ref="containerRef">
+            <div v-for="node in nodes" 
+                 :key="node.issue.uuid"
+                 class="result" 
+                 :class="{ 'neutral': node.netVotes === 0, 'positive': node.netVotes > 0, 'negative': node.netVotes < 0 }"
+                 :style="{ 
+                     position: 'absolute',
+                     left: `${node.x}px`,
+                     top: `${node.y}px`,
+                     transform: `translate(-50%, -50%) scale(${0.5 + (node.votePercentage * .5)})`,
+                     zIndex: getNodeZIndex(node)
+                 }">
+                <div class="emoji">
+                    {{ node.issue.emoji }}
                 </div>
-         
+                <div class="tooltip">
+                    <div class="tooltip-title">{{ node.issue.text }}</div>
+                    <div class="tooltip-votes">Votes: {{ node.netVotes }}</div>
+                    <div class="tooltip-percentage">{{ Math.round(node.votePercentage * 100) }}% of total votes</div>
+                </div>
             </div>
-
-        </template>
-        
+        </div>
     </div>
-    <!-- <pre>{{ results }}</pre> -->
-    
-
 </template>
+
+<style scoped>
+.visualizer-container {
+    position: relative;
+    width: 100%;
+}
+
+.mode-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 16px;
+    background-color: transparent;
+    border: 2px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 20;
+}
+
+.mode-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.result-visualizer {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;
+    border: 2px solid gray;
+    overflow: hidden;
+}
+
+.result {
+    position: absolute;
+    transition: transform 0.2s ease;
+}
+
+.result:hover .tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.emoji {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    opacity: .75;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    font-size: 1.5em;
+    transform: translateX(-50%) translateY(10px);
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 30;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+.tooltip-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.tooltip-votes, .tooltip-percentage {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.positive .emoji {
+    background: #a8e6cf;
+}
+
+.negative .emoji {
+    background: #ffd3b6;
+}
+
+.neutral .emoji {
+    background: #dcdcdc;
+}
+
+@media (max-width: 768px) {
+    .result-visualizer {
+        height: 300px;
+    }
+    
+    .emoji {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .mode-toggle {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+</style>

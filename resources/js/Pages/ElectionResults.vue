@@ -104,7 +104,7 @@ const rawResults = computed(() => {
         };
     });
 
-    return issues.sort((a, b) => Math.abs(b.netVotes) - Math.abs(a.netVotes));
+    return issues.sort((a, b) => b.netVotes - a.netVotes);
 });
 
 

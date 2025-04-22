@@ -24,7 +24,7 @@ const remainingCredits = ref(-1);
  * 
  * @returns {string} The generated UUID.
  */
- const createUUID = () => {
+const createUUID = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -116,7 +116,7 @@ const castVote = (issueUuid: string, opposed: boolean) => {
     }
 }
 
-const onCastVoteEvent = (event : {issueUuid: string, opposed: boolean}) => {
+const onCastVoteEvent = (event: { issueUuid: string, opposed: boolean }) => {
     castVote(event.issueUuid, event.opposed);
 }
 
@@ -131,23 +131,23 @@ const form = useForm({
 })
 
 const submitVote = () => {
-    
-        console.log(participant.value);
 
-        form.name = participant.value.name ?? "";
-        form.remainingCredits = remainingCredits.value;
+    console.log(participant.value);
 
-
-        form.creditsSpent = participant.value.castedVotes.reduce((acc, curr) => acc + curr.creditsSpent, 0);
-       
-        
-        form.votingRoundUuid = votingRound.value.uuid;
-
-        form.castedVotes = participant.value.castedVotes;
+    form.name = participant.value.name ?? "";
+    form.remainingCredits = remainingCredits.value;
 
 
-        console.log(form);
-        form.post(route('vote.store'));
+    form.creditsSpent = participant.value.castedVotes.reduce((acc, curr) => acc + curr.creditsSpent, 0);
+
+
+    form.votingRoundUuid = votingRound.value.uuid;
+
+    form.castedVotes = participant.value.castedVotes;
+
+
+    console.log(form);
+    form.post(route('vote.store'));
 
 }
 
@@ -156,69 +156,61 @@ const submitVote = () => {
 
 <template>
 
-<FrontLayout>
+    <FrontLayout>
 
-    <Tutorial :credits="0" />
+        <Tutorial :credits="0" />
 
-    <div class="vote-container">
+        <div class="vote-container">
 
-        <header>
-            <h1>{{ votingRound.name }}</h1>
-            <p v-if="votingRound.description">{{ votingRound.description }}</p>
-        </header>
+            <header>
+                <h1>{{ votingRound.name }}</h1>
+                <p v-if="votingRound.description">{{ votingRound.description }}</p>
+            </header>
 
-        <div class="influence-pool">
-            <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
+            <div class="influence-pool">
+                <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
                     :isPool="true" :emoji="votingRound.emoji" />
+            </div>
+
+            <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
+
         </div>
 
-        <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
 
-    </div>
+        <!-- <div class="result-container">
+            <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
+        </div> -->
 
+        <br /><br />
+        <button @click="submitVote">Submit your vote</button>
 
-    <div class="result-container">
-        <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
-    </div>
+        <!-- {{ $page.props.errors }} -->
 
-    <br/><br/>
-    <button @click="submitVote">Submit your vote</button>
+    </FrontLayout>
 
-    {{ $page.props.errors }}
-
-</FrontLayout>
-
-
-
-
-
-
-
-
-
-
-<details>
-    <summary>Raw Data</summary>
-    <div>
-                <details>
-                        <summary>Voting Round</summary>
-                        <pre>{{ votingRound }}</pre>
-                </details>
-                <details>
-                        <summary>Participant</summary>
-                        <pre>{{ participant }}</pre>
-                </details>
-                <details>
-                        <summary>Max Credits</summary>
-                        <pre>{{ maxCredits }}</pre>
-                </details>
-                <details>
-                        <summary>Remaining Credits</summary>
-                        <pre>{{ remainingCredits }}</pre>
-                        <input type="range" min="0" max="10000" v-model.number="remainingCredits" />
-                </details>
-    </div>
-</details>
+<!-- 
+    <details>
+        <summary>Raw Data</summary>
+        <div>
+            <details>
+                <summary>Voting Round</summary>
+                <pre>{{ votingRound }}</pre>
+            </details>
+            <details>
+                <summary>Participant</summary>
+                <pre>{{ participant }}</pre>
+            </details>
+            <details>
+                <summary>Max Credits</summary>
+                <pre>{{ maxCredits }}</pre>
+            </details>
+            <details>
+                <summary>Remaining Credits</summary>
+                <pre>{{ remainingCredits }}</pre>
+                <input type="range" min="0" max="10000" v-model.number="remainingCredits" />
+            </details>
+        </div>
+    </details> -->
 
 
 </template>

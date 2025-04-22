@@ -1,8 +1,24 @@
 .issue-cards {
+    padding-top: 5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    grid-template-columns: 1fr 1fr;
+    
+
+
+    $distance: 15rem;
+    gap:1rem;
+    row-gap: 10rem;
     width: 100%;
+    max-width: 600px;
+    padding-bottom: calc(30rem + 5rem);
+
+    .issue-card {
+        &:nth-child(2n) {
+            transform: translateY(20rem);
+        }
+    }
 
     &.visible {
         .issue-card {
@@ -31,10 +47,16 @@
 
 .issue-card {
     width: 100%;
-    aspect-ratio: 3/4;
+    // aspect-ratio: 3/4;
+    height: 25rem;
     perspective: 1000px;
     position: relative;
     opacity: 0;
+
+    // // even
+    // &:nth-child(even) {
+    //     margin-top: 100px;
+    // }
 
     .issue-card-header {
         display: flex;
@@ -70,23 +92,42 @@
     .issue-card-footer {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 2rem;
         align-self: flex-end;
         justify-self: flex-end;
+        
+        
 
 
         button {
             padding: .5rem;
             background-color: transparent;
             border: 2px solid gray;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color .2s;
+
+            font-size: 2rem;
 
             &:hover {
                 background-color: rgba(0, 0, 0, 0.1);
             }
         }
+    }
+
+    transition: all 0.4s;
+    filter: grayscale(100%) blur(2px);
+    scale: .8;
+    opacity: .5;
+
+
+    &.selected {
+        filter: grayscale(0%) blur(0px);
+        scale: 1;
+        opacity: 1;
+      
     }
 
     &.neutral {
@@ -99,8 +140,8 @@
 
     &.positive {
         .front, .back {
-            border: 5px solid green;
-            background-color: rgba(0, 128, 0, 0.1);
+            // border: 5px solid green;
+            // background-color: rgba(0, 128, 0, 0.1);
         }
 
      
@@ -108,8 +149,8 @@
 
     &.negative {
         .front, .back {
-            border: 4px solid purple;
-            background-color: rgba(128, 0, 0, 0.1);
+            // border: 4px solid purple;
+            // background-color: rgba(128, 0, 0, 0.1);
         }
     }
 

@@ -7,6 +7,14 @@ import { usePage } from '@inertiajs/vue3';
 import { compute } from 'three/tsl';
 import { onMounted, ref, computed } from 'vue';
 
+// Enum for issue categories
+enum IssueCategory {
+  NO_BRAINER_FAVOR = "✅ No-Brainer (In Favor)",
+  NO_BRAINER_OPPOSED = "❌ No-Brainer (Opposed)",
+  CONTROVERSIAL = "⚔️ Controversial",
+  HIGH_TRAFFIC = "🔥 High Traffic"
+}
+
 /**
  * Calculates how close the voting is to a 50–50 split between "for" and "against."
  *
@@ -111,19 +119,19 @@ const badgeResults = computed(() => {
         const negativeVotes = issue.votes.filter(v => v.numberOfVotes < 0);
         const polarization = issue.grossVotes > 0 ? Math.abs(issue.netVotes) / issue.grossVotes : 0;
 
-        const categories = [];
+        const categories: IssueCategory[] = [];
 
         if (positiveVotes.length > 0 && negativeVotes.length === 0) {
-            categories.push("✅ No-Brainer (In Favor)");
+            categories.push(IssueCategory.NO_BRAINER_FAVOR);
         }
         if (negativeVotes.length > 0 && positiveVotes.length === 0) {
-            categories.push("❌ No-Brainer (Opposed)");
+            categories.push(IssueCategory.NO_BRAINER_OPPOSED);
         }
         if (polarization > 0.9) {
-            categories.push("⚔️ Controversial");
+            categories.push(IssueCategory.CONTROVERSIAL);
         }
         if (issue.totalCredits === maxCredits) {
-            categories.push("🔥 High Traffic");
+            categories.push(IssueCategory.HIGH_TRAFFIC);
         }
 
         return {
@@ -146,19 +154,19 @@ const textualResults = computed(() => {
     let name = `${result.issue.emoji} ${result.issue.text} `;
 
 
-    if (result.categories.includes("✅ No-Brainer (Support)")) {
-        messages.push(`🤯 ${name} is a No-Brainer to be in favor of`);
+    if (result.categories.includes(IssueCategory.NO_BRAINER_FAVOR)) {
+        messages.push(`✅ ${name} is a No-Brainer to be in favor of`);
     }
 
-    if (result.categories.includes("❌ No-Brainer (Opposed)")) {
-        messages.push(`🤮 ${name} is a No-Brainer to be opposed to`);
+    if (result.categories.includes(IssueCategory.NO_BRAINER_OPPOSED)) {
+        messages.push(`❌ ${name} is a No-Brainer to be opposed to`);
     }
 
-    if (result.categories.includes("🔥 High Traffic")) {
+    if (result.categories.includes(IssueCategory.HIGH_TRAFFIC)) {
         messages.push(`🔥 ${name} is a high traffic issue`);
     }
 
-    if (result.categories.includes("⚔️ Controversial")) {
+    if (result.categories.includes(IssueCategory.CONTROVERSIAL)) {
         messages.push(`⚔️ ${name} is highly controversial, you should discuss this issue`);
     }
 
@@ -180,23 +188,141 @@ const textualResults = computed(() => {
     <h2>{{ $page.props.election.name }}</h2>
     <span>{{ $page.props.election.description }}</span>
 
+
+
+    <div class="election-results-container">
+      <h3>Voting Results</h3>
+      
+      <div v-if="rawResults && rawResults.length > 0" class="results-list">
+        <div v-for="result in rawResults" :key="result.issue.uuid" class="result-item">
+          <h4>{{ result.issue.emoji }} {{ result.issue.text }}</h4>
+          <div class="vote-count">
+            <span :class="{ 'positive': result.netVotes > 0, 'negative': result.netVotes < 0 }">
+              {{ result.netVotes > 0 ? '+' : '' }}{{ result.netVotes }} votes
+            </span>
+            <span class="vote-details">({{ result.totalCredits }} credits spent)</span>
+          </div>
+          
+          <div class="badge-container">
+            <span v-if="result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0" 
+                  class="badge consensus">✅ No-Brainer (Everyone in Favor)</span>
+            <span v-if="result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0" 
+                  class="badge consensus">❌ No-Brainer (Everyone Opposed)</span>
+            <span v-if="Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0" 
+                  class="badge controversial">⚔️ Controversial</span>
+            <span v-if="result.totalCredits === Math.max(...rawResults.map(i => i.totalCredits))" 
+                  class="badge high-traffic">🔥 High Traffic</span>
+          </div>
+        </div>
+      </div>
+      
+      <div v-else class="no-results">
+        No results available
+      </div>
+    </div>
+
+
+
     <div class="text-results">
+      <h3>Text Results</h3>
       <div class="text-result" v-for="message in textualResults" :key="message">
         {{ message.toString() }}
       </div>
     </div>
 
-    <div class="result-container">
+    <!-- <div class="result-container">
         <ResultVisualizer :votingRound="$page.props.election" :participants="$page.props.election.participants!" />
-    </div>
+    </div> -->
 
 </FrontLayout>
 
 
 <details>
-  <summary>Raw Data</summary>
+  <summary>Raw Data (Will be removed in production)</summary>
   <pre>{{ $page.props }}</pre>
 </details>
 
 
 </template>
+
+<style scoped>
+.election-results-container {
+  margin: 2rem 0;
+  font-size: 1.5em;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.result-item {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.result-item h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.vote-count {
+  margin-bottom: 0.5rem;
+}
+
+.vote-count .positive {
+  color: green;
+  font-weight: bold;
+}
+
+.vote-count .negative {
+  color: red;
+  font-weight: bold;
+}
+
+.vote-details {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.badge.consensus {
+  background-color: #e6f7f2;
+  color: #2c7a7b;
+}
+
+.badge.controversial {
+  background-color: #fed7d7;
+  color: #c53030;
+}
+
+.badge.high-traffic {
+  background-color: #feebc8;
+  color: #c05621;
+}
+
+.text-results {
+  margin-top: 2rem;
+}
+
+.text-result {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+</style>

@@ -1,8 +1,14 @@
 <script setup lang="ts">
-
+import BallotIssues from '@/Pages/BallotIssues.vue';
+import * as VotingTypes from '@/types/voting-types';
+import { PropType } from 'vue';
 const props = defineProps({
     credits: {
         type: Number,
+        required: true,
+    },
+    votingRound: {
+        type: Object as PropType<VotingTypes.VotingRound>,
         required: true,
     },
 })
@@ -43,8 +49,13 @@ const props = defineProps({
                 result of the quadratic mathematics. Spreading votes also encourages all voters compromise.</p>
         </article>
 
+        <BallotIssues :votingRound="votingRound" />
+
         <article>
             <h3>Let's Get Started</h3>
         </article>
+
+
+        
     </section>
 </template>

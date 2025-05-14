@@ -10,7 +10,7 @@ import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';
 import ResultVisualizer from '@/Components/ResultVisualizer.vue';
 import IssueCards from '@/Components/IssueCards.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
-
+import BallotIssues from '@/Pages/BallotIssues.vue';
 
 
 
@@ -160,7 +160,9 @@ const submitVote = () => {
 
     <FrontLayout>
 
-        <Tutorial :credits="0" />
+        <Tutorial :credits="0" :votingRound="votingRound" />
+
+    
 
         <div class="vote-container">
 

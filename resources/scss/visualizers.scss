@@ -72,6 +72,20 @@
             font-size: 100cqi;
             pointer-events: none;
         }
+
+        .heart-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+
+     
+        }
     }
 
     .credits-visualizer-poof {

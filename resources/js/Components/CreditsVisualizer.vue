@@ -29,9 +29,9 @@ const percentageLeft = computed(() => {
     let percentageLeft = (props.credits / props.maxCredits) * 100;
 
 
-    // if( percentageLeft > 10){
-    //     return Math.floor(percentageLeft);
-    // }
+    if( percentageLeft > 10){
+        return Math.floor(percentageLeft);
+    }
 
     return Number(percentageLeft.toFixed(2));
 });

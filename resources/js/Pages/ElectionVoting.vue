@@ -83,6 +83,12 @@ onMounted(() => {
 
 
 // Amount to increment/decrement votes by
+// this value should be a bit-safe number.
+// 1
+// .5 // works best
+// .25
+// .125
+// .0625
 const votingStep = .5;
 
 /**
@@ -163,7 +169,7 @@ const submitVote = () => {
         <Tutorial :credits="0" :votingRound="votingRound" />
 
     
-
+<div class="vote-container-wrapper">
         <div class="vote-container">
 
             <header>
@@ -181,9 +187,10 @@ const submitVote = () => {
         </div>
 
 
-        <!-- <div class="result-container">
+        <div class="result-container">
             <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
-        </div> -->
+        </div>
+        </div>
 
         <br /><br />
         <button @click="submitVote">Submit your vote</button>

@@ -107,6 +107,15 @@ const stopVotingForSelectedCard = () => {
     }
 };
 
+const castSingleVote = (opposed: boolean) => {
+    if (selectedIssueIndex.value >= 0 && props.votingRound.issues.length > selectedIssueIndex.value) {
+        const selectedIssue = props.votingRound.issues[selectedIssueIndex.value];
+        activeVotingIssueUuid = selectedIssue.uuid;
+     
+        emit('cast-vote', { issueUuid: activeVotingIssueUuid, opposed });
+    }
+}
+
 </script>
 
 
@@ -123,14 +132,18 @@ const stopVotingForSelectedCard = () => {
         </template>
     </div>
     <div class="voting-controls">
-        <button 
+        <!-- <button 
             @pointerdown="startVotingForSelectedCard(true)" 
             @pointerup="stopVotingForSelectedCard" 
-            @pointerleave="stopVotingForSelectedCard">➖</button>
+            @pointerleave="stopVotingForSelectedCard"
+            
+            >➖</button>
         <button 
             @pointerdown="startVotingForSelectedCard(false)" 
             @pointerup="stopVotingForSelectedCard" 
-            @pointerleave="stopVotingForSelectedCard">➕</button>
+            @pointerleave="stopVotingForSelectedCard">➕</button> -->
+            <button @pointerdown="castSingleVote(true)">➖</button>
+            <button @pointerdown="castSingleVote(false)">➕</button>
     </div>
 </template>
 

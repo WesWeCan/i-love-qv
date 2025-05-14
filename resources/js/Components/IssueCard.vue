@@ -33,6 +33,10 @@ const issueVotingData = computed(() => {
     return issueVotes;
 });
 
+const castSingleVote = (opposed: boolean) => {
+    emit('cast-vote', { issueUuid: props.issue.uuid, opposed });
+}
+
 // Expose methods for parent components to use
 defineExpose({
     startVoting,
@@ -69,8 +73,23 @@ defineExpose({
 
                     </button>
 
-                    <button @pointerdown="startVoting(issue.uuid, false)" @pointerup="stopVoting(issue.uuid)"
+                    <button @pointerdown="castSingleVote(false)" @pointerup="stopVoting(issue.uuid)"
                         @pointerleave="stopVoting(issue.uuid)">
+                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) <
+                            0 ? '➕' : '➕' }} </button>
+
+                </template>
+
+                <template v-if="true">
+                    <button @click="castSingleVote(true)">
+
+                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) >
+                            0 ?
+                        '➖' : '➖' }}
+
+                    </button>
+
+                    <button @click="castSingleVote(false)">
                         {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) <
                             0 ? '➕' : '➕' }} </button>
 

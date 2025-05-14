@@ -13,7 +13,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 
 
 
-const numCredits = 10000;
+
 
 const maxCredits = ref(-1);
 const remainingCredits = ref(-1);
@@ -83,7 +83,7 @@ onMounted(() => {
 
 
 // Amount to increment/decrement votes by
-const votingStep = 1;
+const votingStep = .5;
 
 /**
  * Cast a vote for an issue, calculating quadratic voting cost
@@ -98,22 +98,24 @@ const castVote = (issueUuid: string, opposed: boolean) => {
         return;
     }
 
-    const votesCast = Number(vote.numberOfVotes.toFixed(1));
-    const voteCurrentWorth = Number((votesCast * votesCast).toFixed(2));
+    const votesCast = Number(vote.numberOfVotes); // this is the number of votes cast for this issue
+    const voteCurrentWorth = Number((votesCast * votesCast));
 
     const newVotes = opposed ? votesCast - votingStep : votesCast + votingStep;
-    const voteNewWorth = Number((newVotes * newVotes).toFixed(2));
+    const voteNewWorth = Number((newVotes * newVotes));
 
-    const voteCost = Number((voteNewWorth - voteCurrentWorth).toFixed(2));
+    const voteCost = Number((voteNewWorth - voteCurrentWorth));
 
     if (remainingCredits.value - voteCost >= 0 && remainingCredits.value - voteCost <= maxCredits.value) {
-        remainingCredits.value = Number((remainingCredits.value - voteCost).toFixed(2));
-        vote.creditsSpent = Number((vote.creditsSpent + voteCost).toFixed(2));
-        vote.numberOfVotes = Number((vote.numberOfVotes + (opposed ? -votingStep : votingStep)).toFixed(1));
+        remainingCredits.value = Number((remainingCredits.value - voteCost));
+        vote.creditsSpent = Number((vote.creditsSpent + voteCost));
+        vote.numberOfVotes = Number((vote.numberOfVotes + (opposed ? -votingStep : votingStep)));
     } else {
         console.info("Not enough credits to cast vote");
         return;
     }
+
+    console.log(remainingCredits.value);
 }
 
 const onCastVoteEvent = (event: { issueUuid: string, opposed: boolean }) => {

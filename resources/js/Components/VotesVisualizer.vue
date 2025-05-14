@@ -121,7 +121,7 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
         </div>
 
 
-        <template v-for="(flyer, index) in flyers" :key="index">
+        <template v-for="(flyer, index) in flyers" :key="index" v-if="false">
             <div class="votes-visualizer-flying"
                 :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
                 :style="'transform: scale(' + (scale) + ')'" v-if="flyer.show">

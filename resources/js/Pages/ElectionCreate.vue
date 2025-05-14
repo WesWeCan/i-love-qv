@@ -66,7 +66,7 @@ const form = useForm<VotingTypes.VotingRound>({
     name: "New Election",
     description: "Emoji Party",
     emoji: "🤍",
-    credits: 10000,
+    credits: 100,
     issues: [] as VotingTypes.Issue[],
     options: {
         forceSpread: false,

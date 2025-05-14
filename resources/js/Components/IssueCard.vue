@@ -48,7 +48,7 @@ defineExpose({
         <div class="front">
             <div class="issue-card-header">
                 <div class="issue-card-emoji">{{ props.issue.emoji }}</div>
-                <h2>{{ props.issue.text }}</h2>
+                <h2>{{ props.issue.text }} </h2>
                 <span @click="flipped = !flipped" class="issue-card-emoji flip">🔁</span>
             </div>
             <div class="issue-card-visualizer">

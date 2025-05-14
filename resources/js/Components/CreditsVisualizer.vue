@@ -25,9 +25,9 @@ import { computed, onMounted, ref, watch } from 'vue';
         let percentageLeft = (props.credits / props.maxCredits) * 100;
 
 
-        if( percentageLeft > 10){
-            return Math.floor(percentageLeft);
-        }
+        // if( percentageLeft > 10){
+        //     return Math.floor(percentageLeft);
+        // }
 
         return Number(percentageLeft.toFixed(2));
     });
@@ -112,7 +112,7 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
         <div class="emoji" >💥</div>
     </div>
 
-    <template v-for="(flyer, index) in flyers" :key="index">
+    <template v-for="(flyer, index) in flyers" :key="index" v-if="false">
     <div class="credits-visualizer-flying" :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
         :style="'transform: scale(' + (scale) + ')'"
         v-if="flyer.show"

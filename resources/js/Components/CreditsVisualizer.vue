@@ -4,7 +4,7 @@ import Sparkles from '@/Components/Sparkles.vue';
 import { computed, onMounted, ref, watch } from 'vue';
 
 
-import heart from '@/assets/img/heart.png';
+import heart from '@/Assets/img/heart.png';
 
 
 const props = defineProps<{

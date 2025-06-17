@@ -2,7 +2,6 @@ export interface Issue {
     text: string;
     uuid: string;
     description?: string;
-    emoji: string;
     super?: string;
 };
 
@@ -75,7 +74,6 @@ export interface VotingRound {
     name: string;
     description?: string;
 
-    emoji: string;
     credits: number;
     issues: Issue[];
     options: VotingRoundOptions;

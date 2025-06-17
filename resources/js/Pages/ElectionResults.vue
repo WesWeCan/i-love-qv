@@ -131,7 +131,7 @@ const badgeResults = computed(() => {
             categories.push(IssueCategory.CONTROVERSIAL);
         }
         if (issue.totalCredits === maxCredits) {
-            categories.push(IssueCategory.HIGH_TRAFFIC);
+            categories.push(IssueCategory.HIGH_TRAFFIC); // is actually the highest traffic issue
         }
 
         return {

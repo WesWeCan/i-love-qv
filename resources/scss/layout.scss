@@ -6,10 +6,21 @@ body {
 
     overscroll-behavior-x: none;
 
-    font-family: 'Assistant', sans-serif;
+    background-color: #f8f3e8;
+    background: linear-gradient(40deg, #ddfff7 0%, #f8f3e8 78.42%);
+    background-size: 150% 150%;
+    animation: BackgroundGradient 10s ease-in-out infinite;
+
+    min-height: 100svh;
+}
+
+* {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
 }
 
 .front-layout {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 
@@ -27,6 +38,7 @@ footer {
     width: 100%;
     padding: 1rem;
     text-align: center;
+    margin-top: auto;
 
     display: flex;
     flex-direction: column;
@@ -36,5 +48,35 @@ footer {
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cambo', serif;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+p {
+    max-width: 60ch;
+}
+
+a {
+    color: #13a89e;
+    text-decoration: none;
+
+    &:hover {
+        color: #16c9bd;
+        text-decoration: underline;
     }
 }

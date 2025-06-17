@@ -12,13 +12,12 @@ import * as VotingTypes from '@/types/voting-types';
 
 
 const tempCredits = ref(10);
-const maxIssues = 8; // it is advised to keep the maximum number of issues to 8
+const maxIssues = 10; // it is advised to keep the maximum number of issues to 10
 const minIssues = 4;
 
 const maxTempCredits = 10;
 const minTempCredits = 1;
 
-const randomEmojis = ['🌟', '🎈', '🎯', '🎨', '🎭', '🎪', '🎢', '🎡', '🎠', '🎮', '🎲', '🎸', '🎺', '🌈', '🎵', '🌞', '🌙', '⭐', '🔮', '🦄', '🌺', '🍀', '🎪', '🐳', '🦋', '🌸', '🍄', '🌵', '🌊', '🍁', '🦚', '🦜', '🦢', '🦩', '🦒', '🦁', '🐘', '🦔', '🐢', '🦎', '🐙', '🦈', '🐋', '🐊', '🦑', '🐠', '🦗', '🐝', '🦅', '🕊️'].filter((value, index, self) => self.indexOf(value) === index)
 
 /**
  * Executes the code inside the onMounted callback function.
@@ -36,7 +35,7 @@ onMounted(() => {
  * 
  * @returns {string} The generated UUID.
  */
- const createUUID = () => {
+const createUUID = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -63,9 +62,8 @@ onMounted(() => {
 const form = useForm<VotingTypes.VotingRound>({
     id: 0,
     uuid: createUUID(),
-    name: "New Election",
-    description: "Emoji Party",
-    emoji: "🤍",
+    name: "New Voting Round",
+    description: "",
     credits: 100,
     issues: [] as VotingTypes.Issue[],
     options: {
@@ -77,9 +75,9 @@ const form = useForm<VotingTypes.VotingRound>({
  * Submits the form data and posts it to the server.
  */
 const submit = () => {
-    
 
-    if(form.options.forceSpread) {
+
+    if (form.options.forceSpread) {
         form.credits -= 1;
     }
 
@@ -135,17 +133,11 @@ const addIssue = () => {
     // Define a string of letters to be used for issue naming
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-
-    const usedEmojis = form.issues.map(issue => issue.emoji);
-    const availableEmojis = randomEmojis.filter(emoji => !usedEmojis.includes(emoji));
-    const randomEmoji = availableEmojis[Math.floor(Math.random() * availableEmojis.length)];
-
     // Create a new motion object and add it to the issues array
     form.issues.push({
         text: `Issue ${letters[form.issues.length]}`,
         uuid: createUUID(),
         description: "",
-        emoji: randomEmoji,
     });
 };
 
@@ -166,86 +158,76 @@ const removeIssue = (index: number) => {
 
 
 
-
-
-const onEmojiSelect = (emoji: EmojiExt, issue: VotingTypes.Issue) => {
-  issue.emoji = emoji.i
-}
-
-
-
 </script>
 
 
 <template>
+
     <Head title="Create Voting Round" />
 
-    <FrontLayout>
+    <FrontLayout class="create-page">
         <h2>Create voting round</h2>
         <!-- <EmojiPicker :native="true" @select="() => console.log('selected')" theme="light"/> -->
         <form @submit.prevent="submit">
-            <label for="name">Name:</label>
-            <input type="text" id="name" v-model="form.name" 
-            placeholder="Emoji Party"
-            />
-            <div class="error" v-if="form.errors.name">{{ form.errors.name }}</div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" v-model="form.name" placeholder="What are we voting on?" />
+                <div class="error" v-if="form.errors.name">{{ form.errors.name }}</div>
+            </div>
 
-            <label for="description">Description:</label>
-            <textarea id="description" v-model="form.description"
-            placeholder="What emojis should attend the party?"
-            ></textarea>
-            <div class="error" v-if="form.errors.description">{{ form.errors.description }}</div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" v-model="form.description"
+                    placeholder="What are we voting on in more detail."></textarea>
+                <div class="error" v-if="form.errors.description">{{ form.errors.description }}</div>
+            </div>
 
 
-            <label>The emoji to use for the pool of influence</label>
-            <div class="emoji-form">
-                    <input type="text" class="emoji-input" v-model="form.emoji" @click="($event) => ($event?.target as HTMLInputElement)?.select()" />
-                    <EmojiPicker :native="true" @select="(emoji) => form.emoji = emoji.i" theme="light"/>
+            <div class="form-group">
+                <h3 for="issues">Issues to vote on:</h3>
+                <small>Note: the issues will be randomly shuffled differently for each vote.</small>
+                <div class="error" v-if="form.errors.issues">{{ form.errors.issues }}</div>
+
+
+                <div class="issues-form">
+                    <div class="issue" v-for="(motion, index) in form.issues" :key="index">
+                        <label>
+                            The issue in one or two words
+                        </label>
+                        <input type="text" v-model="form.issues[index].text" />
+
+
+                        <label>
+                            Explain the issue in more detail
+                        </label>
+                        <textarea v-model="form.issues[index].description"></textarea>
+
+
+                        <button @click.prevent="removeIssue(index)" v-if="!(index < 4)">Remove Issue</button>
+
                     </div>
 
-            <label for="issues">Issues to vote on:</label>
-            <small>Note: the issues will be shuffled differently for each vote.</small>
-            <div class="error" v-if="form.errors.issues">{{ form.errors.issues }}</div>
-
-
-            <div class="issues-form">
-                <div class="issue" v-for="(motion, index) in form.issues" :key="index">
-                    <label>
-                        The issue in 1 single word
-                    </label>
-                    <input type="text" v-model="form.issues[index].text" />
-
-
-                    <label>
-                        The description of the issue
-                    </label>
-                    <textarea v-model="form.issues[index].description"></textarea>
-
-                    <label>
-                        The emoji to use for this issue
-                    </label>
-                    <div class="emoji-form">
-                    <input type="text" class="emoji-input" v-model="form.issues[index].emoji" @click="($event) => ($event?.target as HTMLInputElement)?.select()" />
-                    <EmojiPicker :native="true" @select="(emoji) => onEmojiSelect(emoji, form.issues[index])" theme="light"/>
+                    <div class="issue add-issue">
+                        <button @click.prevent="addIssue()" :disabled="form.issues.length >= maxIssues">{{
+                            form.issues.length >= maxIssues ? 'Maximum of ' + maxIssues + ' issues reached' : 'Add Issue'
+                            }}</button>
                     </div>
-
-                    <button @click.prevent="removeIssue(index)" v-if="!(index < 1)">Remove Issue</button>
-                    
                 </div>
-
-                <button @click.prevent="addIssue()" :disabled="form.issues.length >= maxIssues">Add Issue</button>
             </div>
 
 
 
-            <div class="input-group">
-                <input type="checkbox" v-model="form.options.forceSpread">
-                <label>Choose to force the user to spread their votes across all issues. So it is not possible to put all their influence on one issue.</label>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="checkbox" v-model="form.options.forceSpread">
+                    <label>Choose to force the user to spread their votes across all issues. So it is not possible to
+                        put all their influence on one issue.</label>
+                </div>
             </div>
 
-            <button type="submit">Create voting round</button>
+            <div class="form-group submit-button">
+                <button type="submit">Create voting round</button>
+            </div>
         </form>
     </FrontLayout>
 </template>
-
-

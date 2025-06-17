@@ -22,13 +22,15 @@ onMounted(() => {
 
         <section class="tutorial">
             <article>
-                <h1>Quadratic Commons</h1>
+                <h1>I Love QV</h1>
                 <p>
-                    Quadratic Voting is a collective decision-making procedure that allows you to express the intensity
-                    of your preferences on a number of issues. Each voter receives credits to spread across several
-                    ballot issues. The more a voter spreads their votes, the more voting power is exercised, thanks to
-                    the quadratic mathematics behind the procedure. This encourages all voters to compromise and ensures
-                    that the group's preferences are accurately represented.
+                    QV is a clever method for figuring out which issues people care about most. For instance, if the group must decide on how to spend their time on different tasks, QV can gather and organise preferences about which tasks the group wants to prioritise.
+                </p>
+                <p>
+                    Everyone has equal voting power, which you can use to boost the issues you care about most– but you must weigh your decisions carefully. If you go all out on one issue it will cost you more (this is the quadratic formula) and you will have less voting power for the remaining issues on the ballot.
+                </p>
+                <p>
+                    Once all ballots are submitted the collective results are tallied. QV can significantly mitigate the ‘tyranny of the majority’. In other words, situations in which a factional majority can suppress the will of the minority. In this way, it leads to more equitable and just decision making.
                 </p>
             </article>
 

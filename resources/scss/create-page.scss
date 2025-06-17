@@ -1,22 +1,34 @@
-.issues-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
+.create-page {
     padding: 3rem;
+}
+
+.issues-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: .5rem;
+
+    // padding: 3rem;
 
     .issue {
         display: flex;
         flex-direction: column;
-
         gap: 1rem;
 
         border: 1px solid gray;
         border-radius: 5px;
         padding: 1rem;
 
-        
+        button {
+            width: max-content;
+        }
+    }
 
+    .add-issue {
+        grid-column: span 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 
@@ -24,40 +36,5 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    padding: 3rem;
-
-
-    button {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
 }
 
-
-.emoji-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    @media screen and (max-width: 768px) {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-    }
-
-
-.emoji-input {
-    font-size: 3em;
-    width: 2em;
-    min-width: unset;
-    height: 2em;
-    text-align: center;
-    align-self: center;
-    justify-self: center;
-}
-
-}

@@ -1,21 +1,22 @@
-
 button {
-    padding: .5rem;
+    width: max-content;
+    padding: .35rem 2rem;
     background-color: transparent;
-    border: 2px solid gray;
+    border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color .2s;
+    transition: background-color .4s, color .4s;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
     }
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
 
     padding: 3rem;
 
@@ -23,6 +24,25 @@ form {
 
     .error {
         color: red;
+    }
+
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .submit-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .input-group {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 1rem;
     }
 
 }
@@ -40,4 +60,6 @@ textarea {
 input[type='checkbox'] {
     border-radius: 3px;
     margin-right: 0.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
 }

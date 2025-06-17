@@ -103,7 +103,6 @@ class ElectionController extends Controller
             'description' => $validated['description'],
             'credits' => $validated['credits'],
             'issues' => $validated['issues'],
-            'emoji' => $validated['emoji'],
             'options' => $validated['options'],
         ]);
 

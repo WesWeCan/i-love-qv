@@ -20,7 +20,7 @@ onMounted(() => {
 
     <FrontLayout>
 
-        <section class="tutorial">
+        <section class="page-section">
             <article>
                 <h1>I Love QV</h1>
                 <p>

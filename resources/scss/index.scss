@@ -12,6 +12,7 @@
 
 @include meta.load-css('layout');
 @include meta.load-css('tutorial');
+@include meta.load-css('created-page');
 @include meta.load-css('form');
 @include meta.load-css('create-page');
 @include meta.load-css('vote-page');

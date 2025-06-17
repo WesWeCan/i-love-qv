@@ -1,0 +1,21 @@
+.election-created {
+
+
+
+    .qr-code {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+ 
+        img {
+            min-height: 150px;
+            width: 100%;
+            height: auto;
+            max-width: 150px;
+            border: 1px solid #13a89e;
+            border-radius: .5rem;
+            background-color: white;
+        }
+    }
+}

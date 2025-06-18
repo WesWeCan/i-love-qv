@@ -74,7 +74,7 @@
         <p>Share this link with voters:</p>
         <a href="{{ $votingUrl }}" class="link">{{ $votingUrl }}</a>
         <a href="{{ $votingUrl }}" class="button">Go to {{ $election->name }}</a>
-        <div class="qr-info">QR Code: voting-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached)</div>
+        <div class="qr-info">QR Code: voting-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached with cyan heart)</div>
     </div>
 
     <div class="section">
@@ -82,7 +82,7 @@
         <p>Share this link to view the results:</p>
         <a href="{{ $resultsUrl }}" class="link">{{ $resultsUrl }}</a>
         <a href="{{ $resultsUrl }}" class="button">See results</a>
-        <div class="qr-info">QR Code: results-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached)</div>
+        <div class="qr-info">QR Code: results-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached with purple heart)</div>
     </div>
 
     <div class="section">
@@ -90,11 +90,7 @@
         <p>Save this link to manage the election:</p>
         <a href="{{ $manageUrl }}" class="link">{{ $manageUrl }}</a>
         <a href="{{ $manageUrl }}" class="button">Manage election</a>
-        <div class="qr-info">QR Code: manage-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached)</div>
-    </div>
-
-    <div class="footer">
-        <p>Created: {{ $election->created_at->format('F j, Y \a\t g:i A') }}</p>
+        <div class="qr-info">QR Code: manage-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached with gold heart)</div>
     </div>
 </body>
 </html>

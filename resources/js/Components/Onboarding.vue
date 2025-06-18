@@ -2,9 +2,9 @@
 
 import { ref } from 'vue';
 
-import brain from '@/assets/img/brain.png';
-import collision from '@/assets/img/collision.png';
-import traffic from '@/assets/img/vertical-traffic-light.png';
+import brain from '@/Assets/img/brain.png';
+import collision from '@/Assets/img/collision.png';
+import traffic from '@/Assets/img/vertical-traffic-light.png';
 
 const onboardingCompleted = defineModel<boolean>('onboardingCompleted', {
     required: true,

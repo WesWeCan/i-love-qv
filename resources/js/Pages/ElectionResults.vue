@@ -6,12 +6,12 @@ import * as VotingTypes from '@/types/voting-types';
 import { usePage } from '@inertiajs/vue3';
 import { onMounted, ref, computed } from 'vue';
 
-import brain from '@/assets/img/brain.png';
-import collision from '@/assets/img/collision.png';
-import traffic from '@/assets/img/vertical-traffic-light.png';
-import heart_gold from '@/assets/img/heart_gold.png';
-import heart_cyan from '@/assets/img/heart_cyan.png';
-import heart_purple from '@/assets/img/heart_purple.png';
+import brain from '@/Assets/img/brain.png';
+import collision from '@/Assets/img/collision.png';
+import traffic from '@/Assets/img/vertical-traffic-light.png';
+import heart_gold from '@/Assets/img/heart_gold.png';
+import heart_cyan from '@/Assets/img/heart_cyan.png';
+import heart_purple from '@/Assets/img/heart_purple.png';
 
 
 // Enum for issue categories

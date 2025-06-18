@@ -4,9 +4,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Flyer } from '@/types/voting-types';
 
 
-import neutralEmoji from '@/assets/img/thinking-face.png';
-import positiveEmoji from '@/assets/img/grinning-face.png';
-import negativeEmoji from '@/assets/img/slightly-frowning-face.png';
+import neutralEmoji from '@/Assets/img/thinking-face.png';
+import positiveEmoji from '@/Assets/img/grinning-face.png';
+import negativeEmoji from '@/Assets/img/slightly-frowning-face.png';
 
 const props = defineProps<{
     votes: number;

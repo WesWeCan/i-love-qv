@@ -2,7 +2,7 @@
 
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import { Link, Head, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const page = usePage();
 
@@ -114,6 +114,9 @@ const sendEmail = async () => {
         isSending.value = false;
     }
 };
+
+
+
 </script>
 
 
@@ -129,15 +132,15 @@ const sendEmail = async () => {
             <article>
                 <h1>"{{ $page.props.election.name }}" has been created</h1>
                 <p>
-                    Share the links below with the people that need to vote. You also have recieved a email with the
-                    links and the QR codes.
+                    Share the links below with the people that need to participate in this voting round.
                 </p>
             </article>
 
             <!-- Email Section -->
             <article class="email-section">
                 <h2>Send Email with QR Codes</h2>
-                <p>Enter an email address to send the voting links and QR codes:</p>
+                <p>Enter an email address to send the voting links and QR codes to yourself:</p>
+                <small>We do not store your email address in our database.</small>
                 
                 <div class="email-form">
                     <input 

@@ -4,7 +4,8 @@ import Sparkles from '@/Components/Sparkles.vue';
 import { computed, onMounted, ref, watch } from 'vue';
 
 
-import heart from '@/Assets/img/heart.png';
+import heart from '@/Assets/img/heart_cyan.png';
+import collision from '@/Assets/img/collision.png';
 
 
 const props = defineProps<{
@@ -12,7 +13,6 @@ const props = defineProps<{
     credits: number;
     maxCredits: number;
     isPool: boolean;
-    emoji: string;
 }>();
 
 
@@ -125,37 +125,41 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
             :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
             :style="'transform: scale(' + (scale) + ')'">
             <!-- <div class="emoji" >{{ props.emoji }}</div> -->
-           
             <Sparkles :showSparkles="showSparkles" :numSparkles="numSparkles" />
             <div class="heart-container" :style="'background-image: url(' + heart + ')'"></div>
            
         </div>
 
+        <div class="percentage-left" v-if="showSparkles">
+                {{ percentageLeft }}%
+            </div>
+
+            <div class="percentage-left" v-if="props.credits === 0">
+                0%
+            </div>
+
         <div class="credits-visualizer-poof"
             :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
             v-if="props.credits === 0">
-            <div class="emoji">💥</div>
+            <div class="emoji-img"><img :src="collision" alt="Collision" /></div>
         </div>
 
         
-        <template v-for="(flyer, index) in flyers" :key="index" v-if="false">
+        <!-- <template v-for="(flyer, index) in flyers" :key="index" v-if="false">
             <div class="credits-visualizer-flying"
                 :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
                 :style="'transform: scale(' + (scale) + ')'" v-if="flyer.show">
                 <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }"
                     :style="'animation-direction: ' + (flyer.direction === 'out' ? 'normal' : 'reverse') + ';'">
-                    {{ props.emoji }}
                 </div>
             </div>
-        </template>
+        </template> -->
 
 
     </div>
 
 
-    <div class="percentage-left">
-        Influence left: {{ percentageLeft }}%
-    </div>
+    
 
 
 

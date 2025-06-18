@@ -11,12 +11,19 @@ import ResultVisualizer from '@/Components/ResultVisualizer.vue';
 import IssueCards from '@/Components/IssueCards.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import BallotIssues from '@/Pages/BallotIssues.vue';
+import Onboarding from '@/Components/Onboarding.vue';
+
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiHelpCircleOutline } from '@mdi/js';
 
 
-
+const onboardingCompleted = ref(false);
 
 const maxCredits = ref(-1);
 const remainingCredits = ref(-1);
+
+const noCreditsToast = ref(false);
+const toastTimeout = ref<any>(null);
 
 
 /**
@@ -118,6 +125,15 @@ const castVote = (issueUuid: string, opposed: boolean) => {
         vote.numberOfVotes = Number((vote.numberOfVotes + (opposed ? -votingStep : votingStep)));
     } else {
         console.info("Not enough credits to cast vote");
+        noCreditsToast.value = true;
+
+        if (toastTimeout.value) {
+            clearTimeout(toastTimeout.value);
+        }
+        toastTimeout.value = setTimeout(() => {
+            noCreditsToast.value = false;
+        }, 3500);
+
         return;
     }
 
@@ -139,6 +155,10 @@ const form = useForm({
 })
 
 const submitVote = () => {
+
+    if(!confirm("Are you sure you want to submit your vote?")) {
+        return;
+    }
 
     console.log(participant.value);
 
@@ -166,40 +186,58 @@ const submitVote = () => {
 
     <FrontLayout>
 
-        <Tutorial :credits="0" :votingRound="votingRound" />
-
-    
-<div class="vote-container-wrapper">
-        <div class="vote-container">
-
-            <header>
-                <h1>{{ votingRound.name }}</h1>
-                <p v-if="votingRound.description">{{ votingRound.description }}</p>
-            </header>
-
-            <div class="influence-pool">
-                <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
-                    :isPool="true" :emoji="votingRound.emoji" />
+        <Transition name="swipe" mode="out-in">
+            <div v-if="!onboardingCompleted" class="onboarding">
+                <Onboarding v-model:onboarding-completed="onboardingCompleted" />
             </div>
 
-            <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
+            <div v-else>
+                <section class="page-section issues-section">
+                    <article class="ballot-issues">
+                        <BallotIssues :votingRound="votingRound" />
+                    </article>
+                </section>
 
+                <div class="vote-container-wrapper">
+                    <div class="vote-container">
+
+                        <header>
+                            <h1>{{ votingRound.name }}</h1>
+                            <p v-if="votingRound.description">{{ votingRound.description }}</p>
+                        </header>
+
+                        <div class="influence-pool">
+                            <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
+                                :isPool="true"  />
+                        </div>
+
+                        <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
+                    </div>
+                </div>
+
+             
+                    <section class="submit-vote-section">
+                        <button @click="submitVote">Submit your vote</button>
+                    </section>
+
+                    <!-- {{ $page.props.errors }} -->
+
+            </div>
+        </Transition>
+        
+        <div class="no-credits-toast" :class="{ visible: noCreditsToast }">
+            <p>You don't have enough influence left to cast this vote.</p>
         </div>
 
-
-        <div class="result-container">
-            <ResultVisualizer :votingRound="votingRound" :participants="[participant]" />
-        </div>
+        <div class="help-section" @click="onboardingCompleted = false" v-if="onboardingCompleted">
+            <SvgIcon :size="22" type="mdi" :path="mdiHelpCircleOutline" />
         </div>
 
-        <br /><br />
-        <button @click="submitVote">Submit your vote</button>
-
-        <!-- {{ $page.props.errors }} -->
+        
 
     </FrontLayout>
 
-<!-- 
+    <!-- 
     <details>
         <summary>Raw Data</summary>
         <div>

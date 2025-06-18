@@ -29,7 +29,7 @@ class QrCodeController extends Controller
         $qrCode = QrCode::size(300)
         ->margin(3)
         ->format('png')
-        ->merge('/public/img/heart_gold.png', 0.3)
+        ->merge('/public/img/heart_purple.png', 0.3)
         ->errorCorrection('H')
         ->generate(url('results/' . $uuid));
 
@@ -43,7 +43,7 @@ class QrCodeController extends Controller
         $qrCode = QrCode::size(300)
         ->margin(3)
         ->format('png')
-        ->merge('/public/img/heart_purple.png', 0.3)
+        ->merge('/public/img/heart_gold.png', 0.3)
         ->errorCorrection('H')
         ->generate(url('manage/' . $key));
 

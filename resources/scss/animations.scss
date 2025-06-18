@@ -94,3 +94,47 @@
         background-position: 0% 50%;
     }
 }
+
+// Swipe transition animations
+@keyframes swipeInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes swipeOutToLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+
+.swipe-enter-active {
+    animation: swipeInFromRight 0.4s ease-out;
+}
+
+.swipe-leave-active {
+    animation: swipeOutToLeft 0.4s ease-in;
+}
+
+.swipe-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+.swipe-leave-to {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+

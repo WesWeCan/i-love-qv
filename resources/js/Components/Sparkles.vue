@@ -86,7 +86,7 @@ onMounted(() => {
 
 
 
-    background: radial-gradient(circle, rgb(229 209 150) 0%, rgb(230 142 68) 64%, rgb(107 34 33) 80%, rgba(255, 255, 255, 0.5) 100%);
+    background: radial-gradient(circle, rgb(150 229 229) 0%, rgb(68 142 230) 64%, rgb(33 107 107) 80%, rgba(255, 255, 255, 0.5) 100%);
     clip-path: polygon(
         50% 0%, 
         61% 35%, 
@@ -99,8 +99,8 @@ onMounted(() => {
         2% 35%, 
         39% 35%
     );
-    box-shadow: 0 0 5px rgba(255, 255, 0, 0.7), 
-                0 0 10px rgba(255, 165, 0, 0.5);
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.7), 
+                0 0 10px rgba(0, 165, 255, 0.5);
 
     animation: sparkle-animation 1.5s ease-in-out infinite;
 
@@ -122,15 +122,15 @@ onMounted(() => {
     }
 
     &.variant-1 {
-        background: radial-gradient(circle, rgb(255, 255, 200) 0%, rgb(255, 165, 0) 64%, rgb(255, 140, 0) 80%, rgba(255, 255, 255, 0.5) 100%);
+        background: radial-gradient(circle, rgb(200 255 255) 0%, rgb(0 165 255) 64%, rgb(0 140 255) 80%, rgba(255, 255, 255, 0.5) 100%);
     }
 
     &.variant-2 {
-        background: radial-gradient(circle, rgb(255, 255, 200) 0%, rgb(255, 165, 0) 64%, rgb(255, 140, 0) 80%, rgba(255, 255, 255, 0.5) 100%);
+        background: radial-gradient(circle, rgb(180 255 255) 0%, rgb(0 191 255) 64%, rgb(0 150 255) 80%, rgba(255, 255, 255, 0.5) 100%);
     }
 
     &.variant-3 {
-        background: radial-gradient(circle, rgb(255, 255, 200) 0%, rgb(255, 165, 0) 64%, rgb(255, 140, 0) 80%, rgba(255, 255, 255, 0.5) 100%);
+        background: radial-gradient(circle, rgb(220 255 255) 0%, rgb(0 200 255) 64%, rgb(0 160 255) 80%, rgba(255, 255, 255, 0.5) 100%);
     }
 
 

@@ -68,9 +68,9 @@ const results = computed<ResultOutput>(() => {
         
             <div class="result" :class="{ 'neutral' : result.netVotes === 0, 'positive' : result.netVotes > 0, 'negative' : result.netVotes < 0 }">
 
-                <div class="emoji" :style="{ '--scale': result.votePercentage }">
+                <!-- <div class="emoji" :style="{ '--scale': result.votePercentage }">
                     {{ result.issue.emoji }}
-                </div>
+                </div> -->
          
             </div>
 

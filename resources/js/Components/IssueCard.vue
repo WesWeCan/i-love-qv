@@ -4,6 +4,10 @@ import { computed, ref, onMounted } from 'vue';
 import VotesVisualizer from './VotesVisualizer.vue';
 import { useContinuousVoting } from '@/Composables/useContinuousVoting';
 
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiInformationOutline, mdiRepeat } from '@mdi/js';
+
+
 const props = defineProps<{
     issue: VotingTypes.Issue;
     participant: VotingTypes.Participant;
@@ -51,60 +55,41 @@ defineExpose({
 
         <div class="front">
             <div class="issue-card-header">
-                <div class="issue-card-emoji">{{ props.issue.emoji }}</div>
                 <h2>{{ props.issue.text }} </h2>
-                <span @click="flipped = !flipped" class="issue-card-emoji flip">🔁</span>
+                <span @click="flipped = !flipped" class="issue-card-emoji flip">
+                    <svg-icon :size="22" type="mdi" :path="mdiInformationOutline"></svg-icon>
+                </span>
             </div>
             <div class="issue-card-visualizer">
                 <VotesVisualizer :votes="issueVotingData.numberOfVotes" :credits="issueVotingData.creditsSpent"
-                    :maxCredits="votingRound.credits" :isPool="false" :emoji="props.issue.emoji" :use-emoji="false"
-                    :pool-emoji="props.votingRound.emoji" />
+                    :maxCredits="votingRound.credits" :isPool="false" />
             </div>
             <div class="issue-card-footer">
-
-                <!-- TODO: MAKE THIS BASED ON SOMETHING  -->
-                <template v-if="false">
-                    <button @pointerdown="startVoting(issue.uuid, true)" @pointerup="stopVoting(issue.uuid)"
-                        @pointerleave="stopVoting(issue.uuid)">
-
-                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) >
-                            0 ?
-                        '➖' : '➖' }}
-
+                    <button @click="castSingleVote(true)" class="vote-button vote-button-opposed">
+                        <span class="line"></span>
                     </button>
 
-                    <button @pointerdown="castSingleVote(false)" @pointerup="stopVoting(issue.uuid)"
-                        @pointerleave="stopVoting(issue.uuid)">
-                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) <
-                            0 ? '➕' : '➕' }} </button>
-
-                </template>
-
-                <template v-if="true">
-                    <button @click="castSingleVote(true)">
-
-                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) >
-                            0 ?
-                        '➖' : '➖' }}
-
+                    <button @click="castSingleVote(false)" class="vote-button vote-button-favor">
+                        <span class="line"></span>
+                        <span class="line"></span>
                     </button>
-
-                    <button @click="castSingleVote(false)">
-                        {{(participant?.castedVotes?.find(vote => vote.issueUuid === issue.uuid)?.numberOfVotes || 0) <
-                            0 ? '➕' : '➕' }} </button>
-
-                </template>
             </div>
         </div>
 
         <div class="back">
             <div class="issue-card-header">
-                <div class="issue-card-emoji">{{ props.issue.emoji }}</div>
                 <h2>{{ props.issue.text }}</h2>
-                <span @click="flipped = !flipped" class="issue-card-emoji flip">🔁</span>
+                <span @click="flipped = !flipped" class="issue-card-emoji flip">
+                    <svg-icon :size="22" type="mdi" :path="mdiRepeat"></svg-icon>
+                </span>
             </div>
             <div class="issue-card-visualizer">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                <template v-if="props.issue.description">
+                    {{ props.issue.description }}
+                </template>
+                <template v-else>
+                    <em>No description</em>
+                </template>
             </div>
             <div class="issue-card-footer"></div>
         </div>

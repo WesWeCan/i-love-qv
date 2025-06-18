@@ -17,3 +17,4 @@ export type PageProps<
     election?: VotingRound;
     myVoteCode?: string;
 };
+

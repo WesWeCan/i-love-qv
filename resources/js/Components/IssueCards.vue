@@ -17,7 +17,7 @@ const emit = defineEmits(['cast-vote']);
 const { startVoting, stopVoting } = useContinuousVoting(emit);
 
 const isVisible = ref(false);
-const cardsContainer = ref(null);
+const cardsContainer = ref<HTMLElement | null>(null);
 const selectedIssueIndex = ref(0);
 
 // Store references to issue cards for position calculations
@@ -28,7 +28,62 @@ const issueCardComponentRefs = ref([]);
 // Track active voting
 let activeVotingIssueUuid: string | null = null;
 
+// Drag functionality for desktop
+const isDragging = ref(false);
+const startX = ref(0);
+const scrollLeft = ref(0);
+const isDesktop = ref(false);
+
+// Check if device is desktop (not touch)
+const checkIfDesktop = () => {
+    isDesktop.value = !('ontouchstart' in window) && !navigator.maxTouchPoints;
+};
+
+// Drag event handlers
+const handleMouseDown = (e: MouseEvent) => {
+    if (!isDesktop.value || !cardsContainer.value) return;
+    
+    // Don't start dragging if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('.vote-button') || target.closest('.flip')) {
+        return;
+    }
+    
+    isDragging.value = true;
+    startX.value = e.pageX - cardsContainer.value.offsetLeft;
+    scrollLeft.value = cardsContainer.value.scrollLeft;
+    cardsContainer.value.style.cursor = 'grabbing';
+    cardsContainer.value.style.userSelect = 'none';
+};
+
+const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging.value || !isDesktop.value || !cardsContainer.value) return;
+    
+    e.preventDefault();
+    const x = e.pageX - cardsContainer.value.offsetLeft;
+    const walk = (x - startX.value) * 2; // Scroll speed multiplier
+    cardsContainer.value.scrollLeft = scrollLeft.value - walk;
+};
+
+const handleMouseUp = () => {
+    if (!isDesktop.value || !cardsContainer.value) return;
+    
+    isDragging.value = false;
+    cardsContainer.value.style.cursor = 'grab';
+    cardsContainer.value.style.removeProperty('user-select');
+};
+
+const handleMouseLeave = () => {
+    if (!isDesktop.value || !cardsContainer.value) return;
+    
+    isDragging.value = false;
+    cardsContainer.value.style.cursor = 'grab';
+    cardsContainer.value.style.removeProperty('user-select');
+};
+
 onMounted(() => {
+    checkIfDesktop();
+    
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
@@ -42,6 +97,14 @@ onMounted(() => {
 
     if (cardsContainer.value) {
         observer.observe(cardsContainer.value);
+        
+        // Add drag event listeners for desktop
+        if (isDesktop.value) {
+            cardsContainer.value.addEventListener('mousedown', handleMouseDown);
+            cardsContainer.value.addEventListener('mousemove', handleMouseMove);
+            cardsContainer.value.addEventListener('mouseup', handleMouseUp);
+            cardsContainer.value.addEventListener('mouseleave', handleMouseLeave);
+        }
     }
 
     // Initialize the cards array after the component is mounted
@@ -52,11 +115,22 @@ onMounted(() => {
 
     // Add scroll event listener
     window.addEventListener('scroll', updateSelectedCard);
+    
+    // Listen for window resize to update desktop detection
+    window.addEventListener('resize', checkIfDesktop);
 });
 
 onBeforeUnmount(() => {
-    // Clean up event listener
+    // Clean up event listeners
     window.removeEventListener('scroll', updateSelectedCard);
+    window.removeEventListener('resize', checkIfDesktop);
+    
+    if (cardsContainer.value && isDesktop.value) {
+        cardsContainer.value.removeEventListener('mousedown', handleMouseDown);
+        cardsContainer.value.removeEventListener('mousemove', handleMouseMove);
+        cardsContainer.value.removeEventListener('mouseup', handleMouseUp);
+        cardsContainer.value.removeEventListener('mouseleave', handleMouseLeave);
+    }
     
     // Clear any active voting intervals
     if (activeVotingIssueUuid) {
@@ -120,7 +194,15 @@ const castSingleVote = (opposed: boolean) => {
 
 
 <template>
-    <div ref="cardsContainer" class="issue-cards" :class="{ visible: isVisible }">
+    <div 
+        ref="cardsContainer" 
+        class="issue-cards" 
+        :class="{ 
+            visible: isVisible,
+            'desktop-drag': isDesktop,
+            'dragging': isDragging
+        }"
+    >
         <template v-for="(issue, index) in votingRound.issues" :key="index">
             <IssueCard 
                 ref="issueCardComponentRefs"
@@ -131,20 +213,10 @@ const castSingleVote = (opposed: boolean) => {
                 @cast-vote="emit('cast-vote', $event)" />
         </template>
     </div>
-    <div class="voting-controls">
-        <!-- <button 
-            @pointerdown="startVotingForSelectedCard(true)" 
-            @pointerup="stopVotingForSelectedCard" 
-            @pointerleave="stopVotingForSelectedCard"
-            
-            >➖</button>
-        <button 
-            @pointerdown="startVotingForSelectedCard(false)" 
-            @pointerup="stopVotingForSelectedCard" 
-            @pointerleave="stopVotingForSelectedCard">➕</button> -->
+    <!-- <div class="voting-controls">
             <button @pointerdown="castSingleVote(true)">➖</button>
             <button @pointerdown="castSingleVote(false)">➕</button>
-    </div>
+    </div> -->
 </template>
 
 

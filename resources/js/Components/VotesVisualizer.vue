@@ -4,14 +4,15 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Flyer } from '@/types/voting-types';
 import { add } from 'three/tsl';
 
+import neutralEmoji from '@/assets/img/thinking-face.png';
+import positiveEmoji from '@/assets/img/grinning-face.png';
+import negativeEmoji from '@/assets/img/slightly-frowning-face.png';
+
 const props = defineProps<{
     votes: number;
     credits: number;
     maxCredits: number;
     isPool: boolean;
-    poolEmoji: string;
-    emoji: string;
-    useEmoji: boolean;
 }>();
 
 
@@ -41,21 +42,16 @@ const scaleNextVote = computed(() => {
 
 const voteEmoji = computed(() => {
 
-    if (props.useEmoji) {
-        return props.emoji;
-    }
-
-
     if (props.votes === 0) {
-        return '😐';
+        return neutralEmoji;
     }
 
     if (props.votes > 0) {
-        return '🙂';
+        return positiveEmoji;
     }
 
     if (props.votes < 0) {
-        return '☹️';
+        return negativeEmoji;
     }
 
 
@@ -108,33 +104,13 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
 </script>
 
 <template>
-
-
     <div class="votes-visualizer">
         <div class="votes-visualizer-inner"
             :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
             :style="'transform: scale(' + (scale) + ')'">
-            <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }" v-if="!props.isPool">
-                {{ voteEmoji }}
+            <div class="emoji-img" :class="{ negative: props.votes < 0, positive: props.votes > 0 }" v-if="!props.isPool">
+                <img :src="voteEmoji" alt="Vote Emoji" />
             </div>
-            <div class="emoji" v-else>🤍</div>
         </div>
-
-
-        <template v-for="(flyer, index) in flyers" :key="index" v-if="false">
-            <div class="votes-visualizer-flying"
-                :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"
-                :style="'transform: scale(' + (scale) + ')'" v-if="flyer.show">
-                <div class="emoji" :class="{ negative: props.votes < 0, positive: props.votes > 0 }"
-                    v-if="!props.isPool"
-                    :style="'animation-direction: ' + (flyer.direction === 'in' ? 'normal' : 'reverse') + ';'">
-                    {{ props.poolEmoji }}
-                </div>
-            </div>
-        </template>
-
     </div>
-
-
-
 </template>

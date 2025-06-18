@@ -4,7 +4,6 @@ import ResultVisualizer from '@/Components/ResultVisualizer.vue';
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import * as VotingTypes from '@/types/voting-types';
 import { usePage } from '@inertiajs/vue3';
-import { compute } from 'three/tsl';
 import { onMounted, ref, computed } from 'vue';
 
 import brain from '@/assets/img/brain.png';

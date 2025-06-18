@@ -65,6 +65,7 @@ const form = useForm<VotingTypes.VotingRound>({
     name: "New Voting Round",
     description: "",
     credits: 100,
+    locked: false,
     issues: [] as VotingTypes.Issue[],
     options: {
         forceSpread: false,

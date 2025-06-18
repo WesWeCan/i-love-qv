@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { Flyer } from '@/types/voting-types';
-import { add } from 'three/tsl';
+
 
 import neutralEmoji from '@/assets/img/thinking-face.png';
 import positiveEmoji from '@/assets/img/grinning-face.png';

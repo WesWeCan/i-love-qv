@@ -1,66 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# README IS NOT YET FINISHED
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# I LOVE QUADRATIC VOTING (QV)
 
-## About Laravel
+[![License](https://img.shields.io/badge/license-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Description
+Quadratic Voting is a collective decision-making procedure that allows you to express the intensity of your preferences on a number of issues. Each voter receives credits to spread across several ballot issues. The more a voter spreads their votes, the more voting power is exercised, thanks to the quadratic mathematics behind the procedure. This encourages all voters to compromise and ensures that the group's preferences are accurately represented.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Context
+Our QV tool was designed to experiment with commons communities, who need to make many collective decisions together about multiple issues. Situated research using QV is still scarce, and we noticed many existing interfaces are too complex for use with novice communities, and/or fail to point to specific voting outcomes. To address this, we designed our own QV prototype in which we added ‘badges’ to the results page. These indicate, for instance, which issues received the most attention (as this might not be the number one ranked issue) and when an issue is polarizing. In this way, our QV tool can work like a radar, by detecting levels of friction in the voting outcomes and tagging these on the results page. By flagging these outcomes our tool can help to whittle down the ballot, and help communities transition into more focused rounds of deliberation.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## About Charging the Commons
+[Charging the Commons](https://circulateproject.nl/) is a 2-year project that investigates the design of digital platforms for resource communities. The project explores how Situated Design can articulate the values of resource communities- and examines how these values can be translated into designs for the urban commons.
 
-## Learning Laravel
+This quadratic voting prototype was designed for the workshop Design for Collective Decision-Making, in cooperation with the [Community Land Trust H-buurt](https://www.clthbuurt.nl/) (Bijlmer, Amsterdam).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Charging the Commons is a cooperation between Amsterdam University of Applied Sciences ([Civic Interaction Design](https://civicinteractiondesign.com/)) and Avans University of Applied Sciences ([Situated Art & Design](https://caradt.nl/research-group/situated-art-and-design/)).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## DEMO
+### [Take a look at the demo](https://iloveqv.org)
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Supporting material
 
-### Premium Partners
+### Program in Pakhuis de Zwijger (31 May 2024)
+*More and more citizens are coming together to share and manage their resources collectively. When new commons communities emerge, they face a remarkable challenge: deciding on a means to make decisions together.*
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+[LINK: Design for collective decision making, Wed 31 May 2024](https://dezwijger.nl/programma/designing-for-resource-sharing-communities)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Short Film Documenting the Workshop 'Design for Collective Decision-Making'
 
-## Code of Conduct
+[LINK: Watch our video](https://www.youtube.com/embed/n0CEpT7ZOEo)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Credits & References
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Article from the Economist (Inspriation for the flying credits)
+
+[LINK: The interactive Economist article A Square Vote inspired elements of our interface, especially the flying credit.](https://www.economist.com/interactive/2021/12/18/quadratic-voting)
+
+
+### Learn more about RadicalXchange and quadratic voting.
+[LINK: RadicalXchange](https://www.radicalxchange.org/)
+
+
+
+# Technology
+This project uses the following technologies:
+- Laravel (v12)
+- PHP (Version 8.2 or higher)
+- InertiaJs
+- Vue.js 3 (TypeScript)
+
+
+## Installation
+
+
+To install the Quadratic Commons project, follow these steps:
+
+
+1. Clone the repository:
+    ```
+    git clone https://github.com/WesWeCan/quadratic-commons.git
+    ```
+
+2. Navigate to the project directory:
+    ```
+    cd quadratic-commons
+    ```
+
+3. Create a `.env` file by copying the example file:
+    ```
+    cp .env.example .env
+    ```
+
+4. Set up your database configuration in the `.env` file.
+
+5. Generate a new application key:
+    ```
+    php artisan key:generate
+    ```
+
+6. Run the database migration:
+    ```
+    php artisan migrate
+    ```
+
+7. Start the development server:
+    ```
+    php artisan serve
+    ```
+
+
+Now you can access the Quadratic Commons project in your browser at `http://localhost:8000`.
+
+
+Note: Make sure you have Laravel (v10.10) and PHP (Version 8.1 or higher) installed on your system before proceeding with the installation.
+
+### Using Yarn
+
+If you prefer to use Yarn as your package manager, you can follow these additional steps:
+
+1. Install Yarn globally:
+    ```
+    npm install -g yarn
+    ```
+2. Install project dependencies using Yarn:
+    ```
+    yarn install
+    ```
+3. Run the dev server
+    ```
+    yarn dev
+    ```
 
 ## License
+
+This project is licensed under the [CC BY 4.0 License](https://creativecommons.org/licenses/by/4.0/).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

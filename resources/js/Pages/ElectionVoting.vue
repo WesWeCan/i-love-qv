@@ -3,7 +3,6 @@
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
 
-import { exampleIssues } from '@/Assets/ExampleIssues';
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import Tutorial from '@/Components/Tutorial.vue';
 import CreditsVisualizer from '@/Components/CreditsVisualizer.vue';

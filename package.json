@@ -21,14 +21,12 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@jamescoyle/vue-icon": "^0.1.2",
+        "@mdi/js": "^7.2.96",
         "@types/d3": "^7.4.3",
-        "@types/three": "^0.173.0",
         "d3": "^7.9.0",
         "moment": "^2.30.1",
         "sass": "^1.81.0",
-        "three": "^0.173.0",
-        "vue3-emoji-picker": "^1.1.8",
-        "@jamescoyle/vue-icon": "^0.1.2",
-        "@mdi/js": "^7.2.96"
+        "vue3-emoji-picker": "^1.1.8"
     }
 }

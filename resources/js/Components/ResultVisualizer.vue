@@ -209,7 +209,7 @@ const getNodeZIndex = (node: IssueResult) => {
                      zIndex: getNodeZIndex(node)
                  }">
                 <div class="emoji">
-                    {{ node.issue.emoji }}
+                    <!-- {{ node.issue.emoji }} -->
                 </div>
                 <div class="tooltip">
                     <div class="tooltip-title">{{ node.issue.text }}</div>

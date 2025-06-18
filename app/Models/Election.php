@@ -17,11 +17,14 @@ class Election extends Model
         'issues',
         'options',
         'emoji',
+        'key',
+        'locked',
     ];
 
     protected $casts = [
         'issues' => 'array',
         'options' => 'array',
+        'locked' => 'boolean',
     ];
 
     public function participants()

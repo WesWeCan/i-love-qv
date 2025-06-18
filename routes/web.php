@@ -38,4 +38,8 @@ Route::get('/qr/manage/{key}', [QrCodeController::class, 'manage'])->name('qr.ma
 
 
 Route::get('/manage/{key}', [ElectionController::class, 'manage'])->name('election.manage');
+Route::post('/manage/{key}/lock', [ElectionController::class, 'lock'])->name('election.lock');
+Route::post('/manage/{key}/unlock', [ElectionController::class, 'unlock'])->name('election.unlock');
+
+Route::post('/send-email/{uuid}', [ElectionController::class, 'sendEmail'])->name('election.send-email');
 

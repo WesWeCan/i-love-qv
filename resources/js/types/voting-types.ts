@@ -73,6 +73,8 @@ export interface VotingRound {
     uuid: string;
     name: string;
     description?: string;
+    key?: string;
+    locked: boolean;
 
     credits: number;
     issues: Issue[];

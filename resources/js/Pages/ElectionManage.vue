@@ -1,0 +1,49 @@
+<script setup lang="ts">
+
+import FrontLayout from '@/Layouts/FrontLayout.vue';
+import axios from 'axios';
+import { usePage } from '@inertiajs/vue3';
+const page = usePage();
+
+const lockElection = () => {
+    if (!page.props.election) return;
+    axios.post(route('election.lock', page.props.election.key)).then((response) => {
+        location.reload();
+    });
+}
+
+const unlockElection = () => {
+    if (!page.props.election) return;
+    axios.post(route('election.unlock', page.props.election.key)).then((response) => {
+        location.reload();
+    });
+}
+
+</script>
+
+<template>
+
+    <FrontLayout v-if="$page.props.election">
+
+        <section class="page-section">
+            <h1>Manage {{ $page.props.election.name }}</h1>
+
+
+            <p>There are currently {{ $page.props.election.participants?.length }} responses in this voting round.</p>
+
+            <p>The voting round is currently <u>{{ $page.props.election.locked ? 'locked' : 'unlocked' }}</u> for voting.</p>
+
+            <p>Results are currently <u>{{ $page.props.election.locked ? 'visible' : 'hidden' }}</u>.</p>
+
+
+            <button @click="lockElection" v-if="!$page.props.election.locked">Lock Voting</button>
+            <button @click="unlockElection" v-else>Unlock Voting</button>
+
+
+
+        </section>
+
+
+    </FrontLayout>
+
+</template>

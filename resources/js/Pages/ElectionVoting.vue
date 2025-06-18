@@ -186,6 +186,14 @@ const submitVote = () => {
 
     <FrontLayout>
 
+        <template v-if="votingRound.locked">
+            <div class="election-locked">
+                <h1>Election Locked</h1>
+                <p>This election is locked. You can no longer vote.</p>
+                <p>If you think this is an error, please contact the organizer.</p>
+            </div>
+        </template>
+        <template v-else>
         <Transition name="swipe" mode="out-in">
             <div v-if="!onboardingCompleted" class="onboarding">
                 <Onboarding v-model:onboarding-completed="onboardingCompleted" />
@@ -233,7 +241,7 @@ const submitVote = () => {
             <SvgIcon :size="22" type="mdi" :path="mdiHelpCircleOutline" />
         </div>
 
-        
+        </template>
 
     </FrontLayout>
 

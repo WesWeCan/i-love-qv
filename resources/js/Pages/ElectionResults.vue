@@ -165,7 +165,7 @@ const textualResults = computed(() => {
     let name = `${result.issue.text} `;
 
 
-     messages.push(`'${name}' is ranked #${index + 1}.`);
+    messages.push(`'${name}' is ranked #${index + 1}.`);
 
 
     if (result.categories.includes(IssueCategory.NO_BRAINER_FAVOR)) {
@@ -202,89 +202,103 @@ const showTextResults = ref(false);
 
   <FrontLayout v-if="$page.props.election">
 
-    <section class="page-section results-page">
-
-    <h1>Voting Results</h1>
-
-    <img :src="heart_purple" alt="Heart" class="heart-icon" />
-    <h2>{{ $page.props.election.name }}</h2>
 
 
+    <template v-if="!$page.props.election.locked">
+      <div class="election-locked">
+        <h1>The voting round is not yet finished.</h1>
+        <p>Come back later to see the results.</p><br/>
+        <p>Save this link to see the results later: <br/><a :href="route('election.results', $page.props.election.uuid)">{{ route('election.results', $page.props.election.uuid) }}</a></p>
+      <br/>
+        <p>If you think this is an error, please contact the organizer.</p>
+      </div>
 
-    <div class="election-results-container" v-if="!showTextResults">
-  
-      <div v-if="rawResults && rawResults.length > 0" class="results-list">
-        <div v-for="result in rawResults" :key="result.issue.uuid" class="result-item">
+    </template>
 
-          <div class="icons">
-            
-            <div class="icon" v-if="result.totalCredits === Math.max(...rawResults.map(i => i.totalCredits))">
-              <img :src="traffic" alt="Traffic" class="traffic-icon" />
-              <!-- 🔥 High Traffic -->
+    <template v-else>
+
+      <section class="page-section results-page">
+
+        <h1>Voting Results</h1>
+
+        <img :src="heart_purple" alt="Heart" class="heart-icon" />
+        <h2>{{ $page.props.election.name }}</h2>
+
+
+
+        <div class="election-results-container" v-if="!showTextResults">
+
+          <div v-if="rawResults && rawResults.length > 0" class="results-list">
+            <div v-for="result in rawResults" :key="result.issue.uuid" class="result-item">
+
+              <div class="icons">
+
+                <div class="icon" v-if="result.totalCredits === Math.max(...rawResults.map(i => i.totalCredits))">
+                  <img :src="traffic" alt="Traffic" class="traffic-icon" />
+                  <!-- 🔥 High Traffic -->
+                </div>
+                <div class="icon" v-if="Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0">
+                  <img :src="collision" alt="Collision" class="collision-icon" />
+                  <!-- ⚔️ Controversial -->
+                </div>
+
+
+                <div class="icon"
+                  v-if="result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0">
+                  <img :src="brain" alt="Brain" class="brain-icon" />
+                  <!-- ✅ No-Brainer (Everyone in Favor) -->
+                </div>
+
+                <div class="icon"
+                  v-if="result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0">
+                  <img :src="brain" alt="Brain" class="brain-icon" />
+                  <!-- ❌ No-Brainer (Everyone Opposed) -->
+                </div>
+
+
+                <div class="icon" v-if="
+                  result.totalCredits !== Math.max(...rawResults.map(i => i.totalCredits)) &&
+                  !(Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0) &&
+                  !(result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0) &&
+                  !(result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0)
+                ">
+                  <img :src="heart_gold" alt="Heart" class="heart-icon" />
+                </div>
+              </div>
+
+              <h3>{{ result.issue.text }}</h3>
+
             </div>
-            <div class="icon" v-if="Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0">
-              <img :src="collision" alt="Collision" class="collision-icon" />
-              <!-- ⚔️ Controversial -->
-            </div>
 
 
-            <div class="icon" v-if="result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0"
-              >
-              <img :src="brain" alt="Brain" class="brain-icon" />
-              <!-- ✅ No-Brainer (Everyone in Favor) -->
-            </div>
-
-            <div class="icon" v-if="result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0"
-              >
-              <img :src="brain" alt="Brain" class="brain-icon" />
-              <!-- ❌ No-Brainer (Everyone Opposed) -->
-            </div>
-
-
-            <div class="icon" v-if="
-              result.totalCredits !== Math.max(...rawResults.map(i => i.totalCredits)) &&
-              !(Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0) &&
-              !(result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0) &&
-              !(result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0)
-            ">
-              <img :src="heart_gold" alt="Heart" class="heart-icon" />
-            </div>
           </div>
 
-          <h3>{{ result.issue.text }}</h3>
-          
         </div>
 
 
-      </div>
 
-    </div>
-
-
-
-    <div class="text-results" v-else>
-      <div class="text-result" v-for="message in textualResults" :key="message">
-        {{ message.toString() }}
-      </div>
-    </div>
+        <div class="text-results" v-else>
+          <div class="text-result" v-for="message in textualResults" :key="message">
+            {{ message.toString() }}
+          </div>
+        </div>
 
 
-    <button @click="showTextResults = !showTextResults">
-      {{ showTextResults ? 'Show badges' : 'Show as text' }}
-    </button>
+        <button @click="showTextResults = !showTextResults">
+          {{ showTextResults ? 'Show badges' : 'Show as text' }}
+        </button>
 
-    <!-- <div class="result-container">
+        <!-- <div class="result-container">
         <ResultVisualizer :votingRound="$page.props.election" :participants="$page.props.election.participants!" />
     </div> -->
-  </section>
+      </section>
+
+    </template>
+
   </FrontLayout>
 
 
-  <details>
-    <summary>Raw Data (Will be removed in production)</summary>
-    <pre>{{ $page.props }}</pre>
-  </details>
+  
 
 
 </template>
-

@@ -6,6 +6,9 @@ use App\Models\Election;
 use App\Http\Requests\StoreElectionRequest;
 use App\Http\Requests\UpdateElectionRequest;
 use App\Models\Vote;
+use App\Mail\VotingRoundCreated;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use illuminate\Support\Str;
@@ -31,8 +34,8 @@ class ElectionController extends Controller
     {
         $election = Election::where('uuid', $uuid)->with('participants')->firstOrFail();
 
-         // make sure each participant castedVotes is an array from json
-         foreach ($election->participants as $participant) {
+        // make sure each participant castedVotes is an array from json
+        foreach ($election->participants as $participant) {
             $participant->castedVotes = json_decode($participant->castedVotes, true);
         }
 
@@ -40,6 +43,34 @@ class ElectionController extends Controller
         return Inertia::render('ElectionResults', [
             'election' => $election,
         ]);
+    }
+
+
+    public function manage($key)
+    {
+        $election = Election::where('key', $key)->with('participants')->firstOrFail();
+
+        foreach ($election->participants as $participant) {
+            $participant->castedVotes = json_decode($participant->castedVotes, true);
+        }
+
+        return Inertia::render('ElectionManage', [
+            'election' => $election,
+        ]);
+    }
+
+    public function lock($key)
+    {
+        $election = Election::where('key', $key)->firstOrFail();
+        $election->locked = true;
+        $election->save();
+    }
+
+    public function unlock($key)
+    {
+        $election = Election::where('key', $key)->firstOrFail();
+        $election->locked = false;
+        $election->save();
     }
 
 
@@ -100,6 +131,7 @@ class ElectionController extends Controller
         $election = Election::create([
             'name' => $validated['name'],
             'uuid' => Str::uuid(),
+            'key' => Str::uuid(),
             'description' => $validated['description'],
             'credits' => $validated['credits'],
             'issues' => $validated['issues'],
@@ -148,7 +180,31 @@ class ElectionController extends Controller
         //
     }
 
- 
+    /**
+     * Send email with election information and QR codes.
+     */
+    public function sendEmail(Request $request, $uuid)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $election = Election::where('uuid', $uuid)->firstOrFail();
+
+        try {
+            Mail::to($request->email)->send(new VotingRoundCreated($election));
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Email sent successfully!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send email. Please try again.'
+            ], 500);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

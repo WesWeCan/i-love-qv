@@ -2,6 +2,10 @@
 
 import { ref } from 'vue';
 
+import brain from '@/assets/img/brain.png';
+import collision from '@/assets/img/collision.png';
+import traffic from '@/assets/img/vertical-traffic-light.png';
+
 const onboardingCompleted = defineModel<boolean>('onboardingCompleted', {
     required: true,
     default: false,
@@ -55,9 +59,21 @@ const nextStep = () => {
                 <img src="/img/heart_purple.png" alt="Heart" class="heart-icon" />
                 <h2>Results</h2>
             </div>
-                <p>Firstly, a ranking of all issues based on most netto votes. But results can also point to remarkable outcomes. For instance, issues that received a lot of traffic <span>ICON</span>may be polarising <span>ICON</span>or issues nobody in the group is against (a so-called no-brainer.)<span>ICON</span></p>
+                <p>Firstly, a ranking of all issues based on most netto votes. But results can also point to remarkable outcomes. For instance, issues that received a lot of traffic <span class="icon"><img :src="traffic" alt="Traffic" class="traffic-icon" /></span> may be polarising <span class="icon"><img :src="collision" alt="Collision" class="collision-icon" /></span>or issues nobody in the group is against (a so-called no-brainer.) <span class="icon"><img :src="brain" alt="Brain" class="brain-icon" /></span></p>
 
                 <p>These outcomes are badged, which can be helpful for guiding further deliberation and discussion. It is up to the group if a QV vote is binding or a stepping stone in your decision making process.</p>
+
+                <div class="icons-container">
+                    <div class="icon">
+                        <img :src="traffic" alt="Traffic" class="traffic-icon" />
+                    </div>
+                    <div class="icon">
+                        <img :src="collision" alt="Collision" class="collision-icon" />
+                    </div>
+                    <div class="icon">
+                        <img :src="brain" alt="Brain" class="brain-icon" />
+                    </div>
+                </div>
 
                 <button @click="nextStep">Next</button>
             </div>

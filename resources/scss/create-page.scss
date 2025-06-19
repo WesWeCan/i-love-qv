@@ -1,12 +1,20 @@
 .create-page {
     padding: 3rem;
+    
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
 }
 
 .issues-form {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: .5rem;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
 
     // padding: 3rem;
 
@@ -25,12 +33,16 @@
     }
 
     .add-issue {
-        grid-column: span 2;
+        grid-column: 1 / -1;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 }
+
+
+
+
 
 .credits-form {
     display: flex;

@@ -57,7 +57,7 @@ defineExpose({
             <div class="issue-card-header">
                 <h2>{{ props.issue.text }} </h2>
                 <span @click="flipped = !flipped" class="issue-card-emoji flip">
-                    <svg-icon :size="22" type="mdi" :path="mdiInformationOutline"></svg-icon>
+                    <svg-icon :size="26" type="mdi" :path="mdiInformationOutline"></svg-icon>
                 </span>
             </div>
             <div class="issue-card-visualizer">

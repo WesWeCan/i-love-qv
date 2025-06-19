@@ -130,13 +130,13 @@ const addFlyer = async (addOrRemove: number, direction: 'in' | 'out') => {
            
         </div>
 
-        <div class="percentage-left" v-if="showSparkles">
+        <!-- <div class="percentage-left" v-if="showSparkles">
                 {{ percentageLeft }}%
-            </div>
+            </div> -->
 
-            <div class="percentage-left" v-if="props.credits === 0">
+            <!-- <div class="percentage-left" v-if="props.credits === 0">
                 0%
-            </div>
+            </div> -->
 
         <div class="credits-visualizer-poof"
             :class="{ negative: props.votes < 0, positive: props.votes > 0, pool: props.isPool }"

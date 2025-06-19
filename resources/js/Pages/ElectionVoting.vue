@@ -2,6 +2,7 @@
 
 import * as VotingTypes from '@/types/voting-types';
 import { onMounted, ref, computed } from 'vue';
+import { Head } from '@inertiajs/vue3';
 
 import FrontLayout from '@/Layouts/FrontLayout.vue';
 import Tutorial from '@/Components/Tutorial.vue';
@@ -155,9 +156,22 @@ const form = useForm({
 
 const submitVote = () => {
 
-    if(!confirm("Are you sure you want to submit your vote?")) {
-        return;
+    if (remainingCredits.value > 0) {
+
+
+        if (!confirm("Are you sure you want to submit, you still have voting power left.")) {
+            return;
+        }
+
+
     }
+    else {
+        if (!confirm("Are you sure you want to submit your vote?")) {
+            return;
+        }
+    }
+
+
 
     console.log(participant.value);
 
@@ -183,62 +197,65 @@ const submitVote = () => {
 
 <template>
 
+    <Head title="Vote" />
+
     <FrontLayout>
 
         <template v-if="votingRound.locked">
             <div class="election-locked">
-                <h1>Election Locked</h1>
-                <p>This election is locked. You can no longer vote.</p>
+                <h1>Election Closed</h1>
+                <p>This election is closed. You can no longer vote.</p>
                 <p>If you think this is an error, please contact the organizer.</p>
             </div>
         </template>
         <template v-else>
-        <Transition name="swipe" mode="out-in">
-            <div v-if="!onboardingCompleted" class="onboarding">
-                <Onboarding v-model:onboarding-completed="onboardingCompleted" />
-            </div>
-
-            <div v-else>
-                <section class="page-section issues-section">
-                    <article class="ballot-issues">
-                        <BallotIssues :votingRound="votingRound" />
-                    </article>
-                </section>
-
-                <div class="vote-container-wrapper">
-                    <div class="vote-container">
-
-                        <header>
-                            <h1>{{ votingRound.name }}</h1>
-                            <p v-if="votingRound.description">{{ votingRound.description }}</p>
-                        </header>
-
-                        <div class="influence-pool">
-                            <CreditsVisualizer :votes="0" :credits="remainingCredits" :maxCredits="votingRound.credits"
-                                :isPool="true"  />
-                        </div>
-
-                        <IssueCards :votingRound="votingRound" :participant="participant" @cast-vote="onCastVoteEvent" />
-                    </div>
+            <Transition name="swipe" mode="out-in">
+                <div v-if="!onboardingCompleted" class="onboarding">
+                    <Onboarding v-model:onboarding-completed="onboardingCompleted" />
                 </div>
 
-             
+                <div v-else>
+                    <section class="page-section issues-section">
+                        <article class="ballot-issues">
+                            <BallotIssues :votingRound="votingRound" />
+                        </article>
+                    </section>
+
+                    <div class="vote-container-wrapper">
+                        <div class="vote-container">
+
+                            <header>
+                                <h1>{{ votingRound.name }}</h1>
+                                <p v-if="votingRound.description">{{ votingRound.description }}</p>
+                            </header>
+
+                            <div class="influence-pool">
+                                <CreditsVisualizer :votes="0" :credits="remainingCredits"
+                                    :maxCredits="votingRound.credits" :isPool="true" />
+                            </div>
+
+                            <IssueCards :votingRound="votingRound" :participant="participant"
+                                @cast-vote="onCastVoteEvent" />
+                        </div>
+                    </div>
+
+
                     <section class="submit-vote-section">
-                        <button @click="submitVote">Submit your vote</button>
+                        <button @click="submitVote">Submit</button>
                     </section>
 
                     <!-- {{ $page.props.errors }} -->
 
-            </div>
-        </Transition>
-        
-        <div class="no-credits-toast" :class="{ visible: noCreditsToast }">
-            <p>You don't have enough influence left to cast this vote.</p>
-        </div>
+                </div>
+            </Transition>
 
-        <div class="help-section" @click="onboardingCompleted = false" v-if="onboardingCompleted">
-            <SvgIcon :size="22" type="mdi" :path="mdiHelpCircleOutline" />
-        </div>
+            <div class="no-credits-toast" :class="{ visible: noCreditsToast }">
+                <p>You don't have enough voting power left to cast this vote.</p>
+            </div>
+
+            <div class="help-section" @click="onboardingCompleted = false" v-if="onboardingCompleted">
+                <SvgIcon :size="26" type="mdi" :path="mdiHelpCircleOutline" />
+            </div>
 
         </template>
 

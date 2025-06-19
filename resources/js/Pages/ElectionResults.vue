@@ -159,12 +159,40 @@ const textualResults = computed(() => {
 
   if (!badgeResults.value) return [];
 
+  let rankingString = '';
+
   badgeResults.value.forEach((result, index) => {
 
     let name = `${result.issue.text} `;
 
 
-    messages.push(`'${name}' is ranked #${index + 1}.`);
+    if (index === 0) {
+      rankingString += `'${name}' is ranked #${index + 1}, followed by `;
+    }
+    else {
+
+      if (index === badgeResults.value.length - 1) {
+        rankingString += `'${name}'.`;
+      }
+      else {
+        rankingString += `'${name}',`;
+      }
+
+
+    }
+
+
+  });
+
+  messages.push(rankingString);
+
+
+  badgeResults.value.forEach((result, index) => {
+
+    let name = `${result.issue.text} `;
+
+
+
 
 
     if (result.categories.includes(IssueCategory.NO_BRAINER_FAVOR)) {
@@ -205,11 +233,13 @@ const showTextResults = ref(false);
 
     <template v-if="!$page.props.election.locked">
       <div class="election-locked">
-        <h1>The voting round is not yet finished.</h1>
-        <p>Come back later to see the results.</p><br/>
-        <p>Save this link to see the results later: <br/><a :href="route('election.results', $page.props.election.uuid)">{{ route('election.results', $page.props.election.uuid) }}</a></p>
-      <br/>
-        <p>If you think this is an error, please contact the organizer.</p>
+        <h1>The voting round is still going on,</h1>
+        <p>Check in later to view results:</p><br />
+        <p><a :href="route('election.results', $page.props.election.uuid)">{{ route('election.results',
+          $page.props.election.uuid) }}</a></p>
+        <p>You can also manage the election from this page.</p>
+        <br />
+        <p>If you think this is an error, please contact the host.</p>
       </div>
 
     </template>
@@ -233,24 +263,32 @@ const showTextResults = ref(false);
               <div class="icons">
 
                 <div class="icon" v-if="result.totalCredits === Math.max(...rawResults.map(i => i.totalCredits))">
-                  <img :src="traffic" alt="Traffic" class="traffic-icon" />
+                  <Popper hover placement="top" content="High Traffic">
+                    <img :src="traffic" alt="Traffic" class="traffic-icon" />
+                  </Popper>
                   <!-- 🔥 High Traffic -->
                 </div>
                 <div class="icon" v-if="Math.abs(result.netVotes) / result.grossVotes > 0.9 && result.grossVotes > 0">
-                  <img :src="collision" alt="Collision" class="collision-icon" />
+                  <Popper hover placement="top" content="Controversial">
+                    <img :src="collision" alt="Collision" class="collision-icon" />
+                  </Popper>
                   <!-- ⚔️ Controversial -->
                 </div>
 
 
                 <div class="icon"
                   v-if="result.votes.filter(v => v.numberOfVotes > 0).length > 0 && result.votes.filter(v => v.numberOfVotes < 0).length === 0">
-                  <img :src="brain" alt="Brain" class="brain-icon" />
+                  <Popper hover placement="top" content="No-Brainer (Everyone in Favor)">
+                    <img :src="brain" alt="Brain" class="brain-icon" />
+                  </Popper>
                   <!-- ✅ No-Brainer (Everyone in Favor) -->
                 </div>
 
                 <div class="icon"
                   v-if="result.votes.filter(v => v.numberOfVotes < 0).length > 0 && result.votes.filter(v => v.numberOfVotes > 0).length === 0">
-                  <img :src="brain" alt="Brain" class="brain-icon" />
+                  <Popper hover placement="top" content="No-Brainer (Everyone Opposed)">
+                    <img :src="brain" alt="Brain" class="brain-icon" />
+                  </Popper>
                   <!-- ❌ No-Brainer (Everyone Opposed) -->
                 </div>
 
@@ -284,7 +322,7 @@ const showTextResults = ref(false);
 
 
         <button @click="showTextResults = !showTextResults">
-          {{ showTextResults ? 'Show badges' : 'Show as text' }}
+          {{ showTextResults ? 'Ranking' : 'Show as text' }}
         </button>
 
         <!-- <div class="result-container">
@@ -297,7 +335,7 @@ const showTextResults = ref(false);
   </FrontLayout>
 
 
-  
+
 
 
 </template>

@@ -74,12 +74,12 @@ class VotingRoundCreated extends Mailable
             ->errorCorrection('H')
             ->generate(route('election.results', $this->election->uuid));
 
-        $manageQrCode = QrCode::size(300)
-            ->margin(3)
-            ->format('png')
-            ->merge('/public/img/heart_gold.png', 0.3)
-            ->errorCorrection('H')
-            ->generate(route('election.manage', $this->election->key));
+        // $manageQrCode = QrCode::size(300)
+        //     ->margin(3)
+        //     ->format('png')
+        //     ->merge('/public/img/heart_gold.png', 0.3)
+        //     ->errorCorrection('H')
+        //     ->generate(route('election.manage', $this->election->key));
 
         // Sanitize election name for filename
         $electionName = preg_replace('/[^a-zA-Z0-9\s-]/', '', $this->election->name);
@@ -92,9 +92,9 @@ class VotingRoundCreated extends Mailable
             Attachment::fromData(fn () => (string) $resultsQrCode, 'results-' . $electionName . '.png')
                 ->as('results-' . $electionName . '.png')
                 ->withMime('image/png'),
-            Attachment::fromData(fn () => (string) $manageQrCode, 'manage-' . $electionName . '.png')
-                ->as('manage-' . $electionName . '.png')
-                ->withMime('image/png'),
+                // Attachment::fromData(fn () => (string) $manageQrCode, 'manage-' . $electionName . '.png')
+                //     ->as('manage-' . $electionName . '.png')
+                //     ->withMime('image/png'),
         ];
     }
 }

@@ -13,7 +13,7 @@ import * as VotingTypes from '@/types/voting-types';
 
 const tempCredits = ref(10);
 const maxIssues = 10; // it is advised to keep the maximum number of issues to 10
-const minIssues = 4;
+const minIssues = 2;
 
 const maxTempCredits = 10;
 const minTempCredits = 1;
@@ -221,8 +221,7 @@ const removeIssue = (index: number) => {
             <div class="form-group">
                 <div class="input-group">
                     <input type="checkbox" v-model="form.options.forceSpread">
-                    <label>Choose to force the user to spread their votes across all issues. So it is not possible to
-                        put all their influence on one issue.</label>
+                    <label>By checking this box, voters will not be able to cast all their voting power on a single ballot issue.</label>
                 </div>
             </div>
 

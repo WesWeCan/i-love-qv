@@ -12,12 +12,12 @@ const props = defineProps<{
 
 
 
-        <h2>Issues to vote on</h2>
+        <h2>Ballot issues</h2>
         <article class="ballot-issue" v-for="issue in votingRound.issues" :key="issue.uuid">
 
             <h3>{{ issue.text }}</h3>
 
-            <span>{{ issue.description ?? 'No description' }}</span>
+            <!-- <span>{{ issue.description ?? 'No description' }}</span> -->
         </article>
 
 </template>

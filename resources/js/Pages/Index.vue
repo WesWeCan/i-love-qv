@@ -20,9 +20,13 @@ onMounted(() => {
 
     <FrontLayout>
 
-        <section class="page-section">
+        <section class="page-section homepage">
             <article>
-                <h1>I Love QV</h1>
+                <div class="title">
+                    <img src="/img/heart_cyan.png" alt="Heart" class="heart-icon" />
+                    <h1>I Love QV</h1>
+                </div>
+                
                 <p>
                     QV is a clever method for figuring out which issues people care about most. For instance, if the group must decide on how to spend their time on different tasks, QV can gather and organise preferences about which tasks the group wants to prioritise.
                 </p>
@@ -35,7 +39,10 @@ onMounted(() => {
             </article>
 
             <article>
-                <h3>Creating a Voting Round</h3>
+                <div class="title">
+                    <img src="/img/heart_gold.png" alt="Heart" class="heart-icon" />
+                    <h2>Creating a Voting Round</h2>
+                </div>
                 <p>To create a new voting round, simply click on the 'Create Voting Round' button on the main page. You
                     will be prompted to enter the details of the voting round, including the issues to be voted on, the
                     number of credits each voter will receive. Once you have entered all the details, click 'Create' to
@@ -43,11 +50,26 @@ onMounted(() => {
             </article>
 
             <article>
-                <h3>Let's Get Started</h3>
+                <div class="title">
+                    <img src="/img/heart_purple.png" alt="Heart" class="heart-icon" />
+                    <h2>Let's Get Started</h2>
+                </div>
                 <p>Now that you understand how Quadratic Voting works and how to create or join a voting round, it's
                     time to get started!</p>
                 <br />
                 <Link :href="route('election.create')" as="button">Create voting round 🎉</Link>
+            </article>
+
+            <article>
+                <br/>
+                <footer>
+        <span>
+            <p>Design: <a href="https://caradt.nl/researcher/tara-karpinski/">Tara Karpinski</a></p>
+            <p>Creative Technologist: <a href="https://creativetechnologist.nl">Wesley Hartogs</a></p>
+            <p>Source: <a href="https://github.com/WesWeCan/i-love-qv">GitHub</a></p>
+        </span>
+        </footer>
+                
             </article>
         </section>
         

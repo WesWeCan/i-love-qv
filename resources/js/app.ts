@@ -3,6 +3,7 @@ import "../scss/index.scss";
 import './bootstrap';
 import 'vue3-emoji-picker/css'
 
+import Popper from "vue3-popper";
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
@@ -18,10 +19,13 @@ createInertiaApp({
             import.meta.glob<DefineComponent>('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
-            .mount(el);
+           
+            app.component('Popper', Popper)
+            app.mount(el);
     },
     progress: {
         color: '#4B5563',

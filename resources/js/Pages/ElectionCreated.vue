@@ -129,17 +129,17 @@ const sendEmail = async () => {
         <section class="page-section" v-if="$page.props.election">
 
 
-            <article>
+            <article class="center-text">
                 <h1>"{{ $page.props.election.name }}" has been created</h1>
                 <p>
-                    Share the links below with the people that need to participate in this voting round.
+                    Share these links with voters.
                 </p>
             </article>
 
             <!-- Email Section -->
             <article class="email-section">
-                <h2>Send Email with QR Codes</h2>
-                <p>Enter an email address to send the voting links and QR codes to yourself:</p>
+                <h2>Send me an email with QR codes.</h2>
+                <p>Enter your email address to receive the voting links as QR codes.</p>
                 <small>We do not store your email address in our database.</small>
                 
                 <div class="email-form">
@@ -159,9 +159,22 @@ const sendEmail = async () => {
                     </button>
                 </div>
 
+                <small v-if="isSending">
+                    Sending email can take a few moments. Please wait.
+                </small>
+
                 <div v-if="message" :class="['message', messageType]">
                     {{ message }}
                 </div>
+            </article>
+
+            <article>
+                <h2>Manage Link</h2>
+                <p>Save this link to manage the election, but do not share it with voters:</p>
+                <small>You can stop the voting round and release the results from this page.</small>
+                <a :href="route('election.manage', $page.props.election.key!)">{{ route('election.manage',
+                    $page.props.election.key!) }}</a>
+                <Link :href="route('election.manage', $page.props.election.key!)" as="button">Manage</Link>
             </article>
 
             <article>
@@ -201,18 +214,8 @@ const sendEmail = async () => {
                 </div>
             </article>
 
-            <article>
-                <h2>Manage Link</h2>
-                <p>Save this link to manage the election:</p>
-                <a :href="route('election.manage', $page.props.election.key!)">{{ route('election.manage',
-                    $page.props.election.key!) }}</a>
-            </article>
-            <article>
-                <div class="qr-code">
-                    <img :src="route('qr.manage', $page.props.election.key!)" alt="QR Code" />
-                    <button @click="downloadQRCode('manage', $page.props.election.key!)">Download QR Code</button>
-                </div>
-            </article>
+           
+
         </section>
 
     </FrontLayout>

@@ -66,6 +66,17 @@
 <body>
     <div class="header">
         <h1>"{{ $election->name }}" has been created</h1>
+    </div>
+
+    <div class="section">
+        <h2>Manage Link</h2>
+        <p>Save this link to manage the election:</p>
+        <p>On this page you can stop the voting round and release the results.</p>
+        <a href="{{ $manageUrl }}" class="link">{{ $manageUrl }}</a>
+        <a href="{{ $manageUrl }}" class="button">Manage election</a>
+    </div>
+
+    <div class="section">
         <p>Share the links below with the people that need to vote. QR codes are attached to this email.</p>
     </div>
 
@@ -85,12 +96,6 @@
         <div class="qr-info">QR Code: results-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached with purple heart)</div>
     </div>
 
-    <div class="section">
-        <h2>Manage Link</h2>
-        <p>Save this link to manage the election:</p>
-        <a href="{{ $manageUrl }}" class="link">{{ $manageUrl }}</a>
-        <a href="{{ $manageUrl }}" class="button">Manage election</a>
-        <div class="qr-info">QR Code: manage-{{ strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s-]/', '', $election->name))) }}.png (attached with gold heart)</div>
-    </div>
+    
 </body>
 </html>

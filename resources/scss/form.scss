@@ -1,4 +1,4 @@
-button {
+button, *[type="submit"] {
     width: max-content;
     padding: .35rem 2rem;
     background-color: transparent;
@@ -8,6 +8,9 @@ button {
     transition: background-color .4s, color .4s;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    appearance: none;
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.5);

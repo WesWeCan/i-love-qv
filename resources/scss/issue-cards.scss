@@ -154,6 +154,8 @@
 
 
         .vote-button {
+
+            touch-action: manipulation!important;
             display: flex;
             align-items: center;
             justify-content: center;

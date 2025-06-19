@@ -169,8 +169,8 @@ const sendEmail = async () => {
             </article>
 
             <article>
-                <h2>Manage Link</h2>
-                <p>Save this link to manage the election, but do not share it with voters:</p>
+                <h2>Unlock voting results (host)</h2>
+                <p>Save this link to unlock the voting results, but do not share it with voters:</p>
                 <small>You can stop the voting round and release the results from this page.</small>
                 <a :href="route('election.manage', $page.props.election.key!)">{{ route('election.manage',
                     $page.props.election.key!) }}</a>

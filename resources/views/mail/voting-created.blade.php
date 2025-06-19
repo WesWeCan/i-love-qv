@@ -69,9 +69,9 @@
     </div>
 
     <div class="section">
-        <h2>Manage Link</h2>
-        <p>Save this link to manage the election:</p>
-        <p>On this page you can stop the voting round and release the results.</p>
+        <h2>Unlock voting results (host)</h2>
+        <p>Save this link to unlock the voting results, but do not share it with voters:</p>
+        <p>You can stop the voting round and release the results from this page.</p>
         <a href="{{ $manageUrl }}" class="link">{{ $manageUrl }}</a>
         <a href="{{ $manageUrl }}" class="button">Manage election</a>
     </div>

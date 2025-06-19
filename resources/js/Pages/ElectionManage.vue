@@ -26,18 +26,18 @@ const unlockElection = () => {
     <FrontLayout v-if="$page.props.election">
 
         <section class="page-section">
-            <h1>Manage {{ $page.props.election.name }}</h1>
+            <h1>Unlock voting results for '{{ $page.props.election.name }}'</h1>
 
 
             <p>There are currently {{ $page.props.election.participants?.length }} responses in this voting round.</p>
 
-            <p>The voting round is currently <u>{{ $page.props.election.locked ? 'locked' : 'unlocked' }}</u> for voting.</p>
+            <p>Voting is currently <u>{{ $page.props.election.locked ? 'disabled' : 'enabled' }}</u> - users {{ $page.props.election.locked ? 'cannot' : 'can' }} submit new votes.</p>
 
-            <p>Results are currently <u>{{ $page.props.election.locked ? 'visible' : 'hidden' }}</u>.</p>
+            <p>Results are currently <u>{{ $page.props.election.locked ? 'visible' : 'hidden' }}</u> - users {{ $page.props.election.locked ? 'can' : 'cannot' }} see the voting results.</p>
 
 
-            <button @click="lockElection" v-if="!$page.props.election.locked">Lock Voting</button>
-            <button @click="unlockElection" v-else>Unlock Voting</button>
+            <button @click="lockElection" v-if="!$page.props.election.locked">Make results visible, do not allow voting.</button>
+            <button @click="unlockElection" v-else>Hide results, allow voting.</button>
 
 
 

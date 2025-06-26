@@ -18,7 +18,7 @@ class StoreElectionRequest extends FormRequest
             'name' => 'required|string|max:25',
             'description' => 'required|string',
             'credits' => 'required|integer|min:1',
-            'issues' => 'required|array|min:2|max:8',
+            'issues' => 'required|array|min:2|max:10',
             'issues.*.text' => 'required|string',
             'issues.*.uuid' => 'required|string|distinct',
             'issues.*.description' => 'nullable|string',

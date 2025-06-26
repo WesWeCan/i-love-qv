@@ -76,7 +76,12 @@ const form = useForm<VotingTypes.VotingRound>({
  * Submits the form data and posts it to the server.
  */
 const submit = () => {
+    // Show confirmation dialog first
+    const confirmed = confirm("⚠️ Warning: You cannot alter the voting round after it has been created. You can export the ballot for later import. Are you sure you want to continue?");
 
+    if (!confirmed) {
+        return;
+    }
 
     if (form.options.forceSpread) {
         form.credits -= 1;
@@ -158,6 +163,152 @@ const removeIssue = (index: number) => {
 };
 
 
+const exportBallot = () => {
+    // Create a clean ballot object for export (without server-specific fields)
+    const ballotData = {
+        name: form.name,
+        description: form.description,
+        credits: form.credits,
+        issues: form.issues.map(issue => ({
+            text: issue.text,
+            description: issue.description || "",
+            uuid: issue.uuid
+        })),
+        options: {
+            forceSpread: form.options.forceSpread
+        },
+        exportDate: new Date().toISOString(),
+        version: "1.0"
+    };
+
+    // Convert to JSON and create blob
+    const jsonString = JSON.stringify(ballotData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+
+    // Create download link
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${form.name.replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-').toLowerCase()}.qvballot`;
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
+
+const archiveBallot = () => {
+    // Create a nicely formatted text file
+    let textContent = `VOTING ROUND ARCHIVE
+${'='.repeat(50)}
+
+Name: 
+${form.name}
+
+Description: 
+${form.description || 'No description provided'}
+
+Force spread votes: ${form.options.forceSpread ? 'Yes' : 'No'}
+
+${'='.repeat(50)}
+ISSUES TO VOTE ON
+${'='.repeat(50)}
+
+`;
+
+    form.issues.forEach((issue, index) => {
+        textContent += `${index + 1}. ${issue.text}
+
+   Description: 
+   ${issue.description || 'No description provided'}
+   
+
+`;
+    });
+
+    textContent += `${'='.repeat(50)}
+Export Date: ${new Date().toLocaleString()}
+Total Issues: ${form.issues.length}
+${'='.repeat(50)}`;
+
+    // Create blob and download
+    const blob = new Blob([textContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${form.name.replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-').toLowerCase()}-archive.txt`;
+    document.body.appendChild(a);
+    a.click();
+
+    // Cleanup
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
+
+// Import functionality
+const fileInput = ref<HTMLInputElement>();
+
+const importBallot = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) return;
+
+    // Check file extension
+    if (!file.name.endsWith('.qvballot')) {
+        alert('Please select a valid .qvballot file');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const content = e.target?.result as string;
+            const ballotData = JSON.parse(content);
+
+            // Validate the imported data
+            if (!ballotData.name || !ballotData.issues || !Array.isArray(ballotData.issues)) {
+                throw new Error('Invalid ballot file format');
+            }
+
+            // Update the form with imported data
+            form.name = ballotData.name;
+            form.description = ballotData.description || "";
+            form.credits = ballotData.credits || 100;
+            form.options.forceSpread = ballotData.options?.forceSpread || false;
+
+            // Clear existing issues and add imported ones
+            form.issues = [];
+            ballotData.issues.forEach((issue: any) => {
+                form.issues.push({
+                    text: issue.text,
+                    description: issue.description || "",
+                    uuid: issue.uuid || createUUID()
+                });
+            });
+
+            // Update temp credits based on imported credits
+            tempCredits.value = Math.sqrt(form.credits);
+
+            alert('Ballot imported successfully!');
+
+        } catch (error) {
+            console.error('Error importing ballot:', error);
+            alert('Error importing ballot file. Please check the file format.');
+        }
+    };
+
+    reader.readAsText(file);
+
+    // Reset file input
+    if (target) {
+        target.value = '';
+    }
+};
+
+
+
 
 </script>
 
@@ -181,6 +332,15 @@ const removeIssue = (index: number) => {
                 <textarea id="description" v-model="form.description"
                     placeholder="What are we voting on in more detail."></textarea>
                 <div class="error" v-if="form.errors.description">{{ form.errors.description }}</div>
+            </div>
+
+            <div class="import-section">
+                <small>Import a previously exported ballot file (.qvballot)</small>
+                <div class="import-controls">
+                    <input ref="fileInput" type="file" accept=".qvballot" @change="importBallot"
+                        style="display: none;" />
+                    <button @click.prevent="fileInput?.click()">Import ballot file</button>
+                </div>
             </div>
 
 
@@ -210,8 +370,7 @@ const removeIssue = (index: number) => {
 
                     <div class="issue add-issue">
                         <button @click.prevent="addIssue()" :disabled="form.issues.length >= maxIssues">{{
-                            form.issues.length >= maxIssues ? 'Maximum of ' + maxIssues + ' issues reached' : 'Add Issue'
-                            }}</button>
+                            form.issues.length >= maxIssues ? 'Maximum of ' + maxIssues + ' issues reached' : 'Add Issue'}}</button>
                     </div>
                 </div>
             </div>
@@ -221,7 +380,8 @@ const removeIssue = (index: number) => {
             <div class="form-group">
                 <div class="input-group">
                     <input type="checkbox" v-model="form.options.forceSpread">
-                    <label>By checking this box, voters will not be able to cast all their voting power on a single ballot issue.</label>
+                    <label>By checking this box, voters will not be able to cast all their voting power on a single
+                        ballot issue.</label>
                 </div>
             </div>
 
@@ -229,5 +389,17 @@ const removeIssue = (index: number) => {
                 <button type="submit">Create voting round</button>
             </div>
         </form>
+
+
+        <div class="export-section">
+            <small>You can save the ballot data for later use or archive it.</small>
+
+            <div class="buttons">
+                <button @click="exportBallot">Export ballot for later import</button>
+                <button @click="archiveBallot">Archive ballot as text file</button>
+            </div>
+
+
+        </div>
     </FrontLayout>
 </template>

@@ -24,9 +24,10 @@ onMounted(() => {
             <article>
                 <div class="title">
                     <img src="/img/heart_cyan.png" alt="Heart" class="heart-icon" />
-                    <h1>I Love QV</h1>
+                    <h1>Quadratic Voting</h1>
                 </div>
                 
+                <div class="text-container">
                 <p>
                     QV is a clever method for figuring out which issues people care about most. For instance, if the group must decide on how to spend their time on different tasks, QV can gather and organise preferences about which tasks the group wants to prioritise.
                 </p>
@@ -36,6 +37,7 @@ onMounted(() => {
                 <p>
                     Once all ballots are submitted the collective results are tallied. QV can significantly mitigate the ‘tyranny of the majority’. In other words, situations in which a factional majority can suppress the will of the minority. In this way, it leads to more equitable and just decision making.
                 </p>
+                </div>
             </article>
 
             <article>
@@ -43,10 +45,12 @@ onMounted(() => {
                     <img src="/img/heart_gold.png" alt="Heart" class="heart-icon" />
                     <h2>Creating a Voting Round</h2>
                 </div>
+                <div class="text-container">
                 <p>To create a new voting round, simply click on the 'Create Voting Round' button on the main page. You
                     will be prompted to enter the details of the voting round, including the issues to be voted on, the
                     number of credits each voter will receive. Once you have entered all the details, click 'Create' to
                     create the voting round and share the link.</p>
+                </div>
             </article>
 
             <article>
@@ -54,8 +58,10 @@ onMounted(() => {
                     <img src="/img/heart_purple.png" alt="Heart" class="heart-icon" />
                     <h2>Let's Get Started</h2>
                 </div>
+                <div class="text-container">
                 <p>Now that you understand how Quadratic Voting works and how to create or join a voting round, it's
                     time to get started!</p>
+                </div>
                 <br />
                 <Link :href="route('election.create')" as="button">Create voting round 🎉</Link>
             </article>

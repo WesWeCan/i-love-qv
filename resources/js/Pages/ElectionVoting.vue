@@ -12,6 +12,7 @@ import IssueCards from '@/Components/IssueCards.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import BallotIssues from '@/Pages/BallotIssues.vue';
 import Onboarding from '@/Components/Onboarding.vue';
+import ExplainationText from '@/Components/ExplainationText.vue';
 
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiHelpCircleOutline } from '@mdi/js';
@@ -210,17 +211,21 @@ const submitVote = () => {
         </template>
         <template v-else>
             <Transition name="swipe" mode="out-in">
-                <div v-if="!onboardingCompleted" class="onboarding">
-                    <Onboarding v-model:onboarding-completed="onboardingCompleted" />
+                <div v-if="!onboardingCompleted" >
+                    <section class="page-section homepage">
+                    <ExplainationText />
+                    <button @click="onboardingCompleted = true">Get started!</button>
+                </section>
                 </div>
 
                 <div v-else>
-                    <section class="page-section issues-section">
+                    <!-- <section class="page-section issues-section">
                         <article class="ballot-issues">
                             <BallotIssues :votingRound="votingRound" />
                         </article>
-                    </section>
+                    </section> -->
 
+                    <br/><br/>
                     <div class="vote-container-wrapper">
                         <div class="vote-container">
 

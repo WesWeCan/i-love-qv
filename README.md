@@ -4,6 +4,59 @@
 
 [![License](https://img.shields.io/badge/license-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
+        <div class="text-container">
+                    <p>
+                        QV is a clever method for figuring out which issues people care about most. For instance, if the
+                        group must decide on how to spend their time on different tasks, QV can gather and organise
+                        preferences about which tasks the group wants to prioritise.
+                    </p>
+
+                    <p>
+                        Everyone has equal voting power, which you can use to boost the issues you care about most– but
+                        you must weigh your decisions carefully. If you go all out on one issue it will cost you more
+                        (this is the quadratic formula) and you will have less voting power for the remaining issues on
+                        the ballot.
+                    </p>
+
+                    <p>
+                        Once all ballots are submitted the collective results are tallied. QV can significantly mitigate
+                        the ‘tyranny of the majority’. In other words, situations in which a factional majority can
+                        suppress the will of the minority. In this way, it leads to more equitable and just decision
+                        making.
+                    </p>
+                </div>
+            </article>
+
+            <article>
+                <div class="title">
+                    <img src="/img/heart_gold.png" alt="Heart" class="heart-icon" />
+                    <h2>Creating a Voting Round</h2>
+                </div>
+                <div class="text-container">
+                    <p>To create a new voting round, simply click on the 'Create Voting Round' button on the main page.
+                        You
+                        will be prompted to enter the details of the voting round, including the issues to be voted on,
+                        the
+                        number of credits each voter will receive. Once you have entered all the details, click 'Create'
+                        to
+                        create the voting round and share the link.</p>
+                </div>
+            </article>
+
+            <article>
+                <div class="title">
+                    <img src="/img/heart_purple.png" alt="Heart" class="heart-icon" />
+                    <h2>Let's Get Started</h2>
+                </div>
+                <div class="text-container">
+                    <p>Now that you understand how Quadratic Voting works and how to create or join a voting round, it's
+                        time to get started!</p>
+                </div>
+
+
+
+
+
 ## Description
 Quadratic Voting is a collective decision-making procedure that allows you to express the intensity of your preferences on a number of issues. Each voter receives credits to spread across several ballot issues. The more a voter spreads their votes, the more voting power is exercised, thanks to the quadratic mathematics behind the procedure. This encourages all voters to compromise and ensures that the group's preferences are accurately represented.
 

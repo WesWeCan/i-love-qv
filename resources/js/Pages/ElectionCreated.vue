@@ -140,7 +140,7 @@ const sendEmail = async () => {
             <article class="email-section">
                 <h2>Send me an email with QR codes.</h2>
                 <p>Enter your email address to receive the voting links as QR codes.</p>
-                <small>We do not store your email address in our database.</small>
+                <p>We do not store your email address in our database.</p>
                 
                 <div class="email-form">
                     <input 
@@ -171,7 +171,7 @@ const sendEmail = async () => {
             <article>
                 <h2>Unlock voting results (host)</h2>
                 <p>Save this link to unlock the voting results, but do not share it with voters:</p>
-                <small>You can stop the voting round and release the results from this page.</small>
+                <p>You can stop the voting round and release the results from this page.</p>
                 <a :href="route('election.manage', $page.props.election.key!)">{{ route('election.manage',
                     $page.props.election.key!) }}</a>
                 <Link :href="route('election.manage', $page.props.election.key!)" as="button">Manage</Link>
@@ -200,7 +200,7 @@ const sendEmail = async () => {
 
             <article>
                 <h2>Results Link</h2>
-                <p>Share this link to view the results:</p>
+                <p>Share this link with voters to view the results:</p>
                 <a :href="route('election.results', $page.props.election.uuid)">{{ route('election.results',
                     $page.props.election.uuid) }}</a>
 

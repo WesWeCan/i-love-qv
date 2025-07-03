@@ -51,7 +51,7 @@ const createUUID = () => {
  * 
  * @see https://inertiajs.com/forms
  */
-
+//@ts-ignore
 const form = useForm<VotingTypes.VotingRound>({
     id: 0,
     uuid: createUUID(),

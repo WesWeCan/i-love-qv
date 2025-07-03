@@ -139,12 +139,14 @@ const onCastVoteEvent = (event: { issueUuid: string, opposed: boolean }) => {
 /**
  * Form for submitting the vote using inertia
  */
+
 const form = useForm({
     name: "",
     remainingCredits: -1,
     numberOfVotes: -1,
     creditsSpent: -1,
     votingRoundUuid: "",
+    //@ts-ignore
     castedVotes: [] as VotingTypes.IssueVote[],
 })
 

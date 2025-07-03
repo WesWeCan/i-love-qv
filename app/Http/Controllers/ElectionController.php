@@ -193,7 +193,7 @@ class ElectionController extends Controller
 
         try {
             Mail::to($request->email)->send(new VotingRoundCreated($election));
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Email sent successfully!'

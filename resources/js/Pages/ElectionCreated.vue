@@ -5,7 +5,6 @@ import { Link, Head, usePage } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 
 const page = usePage();
-
 const email = ref('');
 const isSending = ref(false);
 const message = ref('');
@@ -13,6 +12,11 @@ const messageType = ref<'success' | 'error' | ''>('');
 const lastSentTime = ref(0);
 const DEBOUNCE_DELAY = 2000; // 2 seconds
 
+/**
+ * Download a QR code as an image
+ * @param type - The type of QR code to download (e.g. 'election' or 'results')
+ * @param uuid - The UUID of the election
+ */
 const downloadQRCode = (type: string, uuid: string) => {
 
     if (!page.props.election?.name) {
@@ -68,6 +72,9 @@ const downloadQRCode = (type: string, uuid: string) => {
     };
 };
 
+/**
+ * Send an email with the voting links as QR codes
+ */
 const sendEmail = async () => {
     if (!email.value || !page.props.election?.uuid) {
         return;
@@ -115,33 +122,24 @@ const sendEmail = async () => {
     }
 };
 
-
-
 </script>
 
 
 <template>
-
     <Head title="Created!" />
-
     <FrontLayout class="election-created">
-
         <section class="page-section" v-if="$page.props.election">
-
-
             <article class="center-text">
                 <h1>"{{ $page.props.election.name }}" has been created</h1>
                 <p>
                     Share these links with voters.
                 </p>
             </article>
-
             <!-- Email Section -->
             <article class="email-section">
                 <h2>Send me an email with QR codes.</h2>
                 <p>Enter your email address to receive the voting links as QR codes.</p>
                 <p>We do not store your email address in our database.</p>
-                
                 <div class="email-form">
                     <input 
                         type="email" 
@@ -158,16 +156,13 @@ const sendEmail = async () => {
                         {{ isSending ? 'Sending...' : 'Send Email' }}
                     </button>
                 </div>
-
                 <small v-if="isSending">
                     Sending email can take a few moments. Please wait.
                 </small>
-
                 <div v-if="message" :class="['message', messageType]">
                     {{ message }}
                 </div>
             </article>
-
             <article>
                 <h2>Unlock voting results (host)</h2>
                 <p>Save this link to unlock the voting results, but do not share it with voters:</p>
@@ -176,36 +171,26 @@ const sendEmail = async () => {
                     $page.props.election.key!) }}</a>
                 <Link :href="route('election.manage', $page.props.election.key!)" as="button">Manage</Link>
             </article>
-
             <article>
-
-
                 <h2>Voting Link</h2>
                 <a :href="route('election.vote', $page.props.election.uuid)">{{ route('election.vote',
                     $page.props.election.uuid) }}</a>
                 <Link :href="route('election.vote', $page.props.election.uuid)" as="button">Go to {{
                     $page.props.election.name
                 }}</Link>
-
             </article>
-
             <article>
-
                 <div class="qr-code">
                     <img :src="route('qr.voting', $page.props.election.uuid)" alt="QR Code" />
                     <button @click="downloadQRCode('election', $page.props.election.uuid)">Download QR Code</button>
                 </div>
             </article>
-
-
             <article>
                 <h2>Results Link</h2>
                 <p>Share this link with voters to view the results:</p>
                 <a :href="route('election.results', $page.props.election.uuid)">{{ route('election.results',
                     $page.props.election.uuid) }}</a>
-
                 <Link :href="route('election.results', $page.props.election.uuid)" as="button">See results</Link>
-
             </article>
             <article>
                 <div class="qr-code">
@@ -213,11 +198,7 @@ const sendEmail = async () => {
                     <button @click="downloadQRCode('results', $page.props.election.uuid)">Download QR Code</button>
                 </div>
             </article>
-
-           
-
         </section>
-
     </FrontLayout>
 </template>
 

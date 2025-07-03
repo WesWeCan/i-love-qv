@@ -1,15 +1,8 @@
 <script setup lang="ts">
-
 import FrontLayout from '@/Layouts/FrontLayout.vue';
-
 import { onMounted, ref } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
-
-import EmojiPicker, { EmojiExt } from 'vue3-emoji-picker'
-
 import * as VotingTypes from '@/types/voting-types';
-
-
 
 const tempCredits = ref(10);
 const maxIssues = 10; // it is advised to keep the maximum number of issues to 10
@@ -90,9 +83,8 @@ const submit = () => {
     form.post(route('election.store'));
 };
 
-
-
 /**
+ * @deprecated
  * Function to change the credits value.
  * @param {boolean} increases - Indicates whether the credits should be increased or decreased.
  */
@@ -119,7 +111,6 @@ const changeCredits = (increases: boolean) => {
     form.credits = Math.pow(tempCredits.value, 2);
 
 };
-
 
 /**
  * Adds a new issue to the motions array.
@@ -161,7 +152,6 @@ const removeIssue = (index: number) => {
 
     form.issues.splice(index, 1);
 };
-
 
 const exportBallot = () => {
     // Create a clean ballot object for export (without server-specific fields)
@@ -314,12 +304,9 @@ const importBallot = (event: Event) => {
 
 
 <template>
-
     <Head title="Create Voting Round" />
-
     <FrontLayout class="create-page">
         <h2>Create voting round</h2>
-        <!-- <EmojiPicker :native="true" @select="() => console.log('selected')" theme="light"/> -->
         <form @submit.prevent="submit">
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -342,41 +329,28 @@ const importBallot = (event: Event) => {
                     <button @click.prevent="fileInput?.click()">Import ballot file</button>
                 </div>
             </div>
-
-
             <div class="form-group">
                 <h3 for="issues">Issues to vote on:</h3>
                 <small>Note: the issues will be randomly shuffled differently for each vote.</small>
                 <div class="error" v-if="form.errors.issues">{{ form.errors.issues }}</div>
-
-
                 <div class="issues-form">
                     <div class="issue" v-for="(motion, index) in form.issues" :key="index">
                         <label>
                             The issue in one or two words
                         </label>
                         <input type="text" v-model="form.issues[index].text" />
-
-
                         <label>
                             Explain the issue in more detail
                         </label>
                         <textarea v-model="form.issues[index].description"></textarea>
-
-
                         <button @click.prevent="removeIssue(index)" v-if="!(index < 4)">Remove Issue</button>
-
                     </div>
-
                     <div class="issue add-issue">
                         <button @click.prevent="addIssue()" :disabled="form.issues.length >= maxIssues">{{
                             form.issues.length >= maxIssues ? 'Maximum of ' + maxIssues + ' issues reached' : 'Add Issue'}}</button>
                     </div>
                 </div>
             </div>
-
-
-
             <div class="form-group">
                 <div class="input-group">
                     <input type="checkbox" v-model="form.options.forceSpread">
@@ -384,22 +358,16 @@ const importBallot = (event: Event) => {
                         ballot issue.</label>
                 </div>
             </div>
-
             <div class="form-group submit-button">
                 <button type="submit">Create voting round</button>
             </div>
         </form>
-
-
         <div class="export-section">
             <small>You can save the ballot data for later use or archive it.</small>
-
             <div class="buttons">
                 <button @click="exportBallot">Export ballot for later import</button>
                 <button @click="archiveBallot">Archive ballot as text file</button>
             </div>
-
-
         </div>
     </FrontLayout>
 </template>

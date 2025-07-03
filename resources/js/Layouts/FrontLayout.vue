@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ILoveQV from '@/Components/ILoveQV.vue';
-
 const props = defineProps({
   hideFooter: {
     type: Boolean,
@@ -21,8 +20,6 @@ const props = defineProps({
 
 <style scoped>
 .footer {
-
-
   font-size: 0.9em;
   margin-top: 6rem;
   width: 100%;
@@ -30,7 +27,5 @@ const props = defineProps({
   justify-content: center;
   align-items: center;
   padding: 1rem;
-
-
 }
 </style>

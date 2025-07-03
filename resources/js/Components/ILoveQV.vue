@@ -4,6 +4,14 @@ import { ref } from 'vue'
 const clickCount = ref(0)
 const showHearts = ref(false)
 const fadeOut = ref(false)
+const hearts = ref<Array<{
+    delay: string;
+    left: string;
+    size: string;
+    speed: string;
+    sway: string;
+}>>([])
+
 let fadeTimeout: number | null = null
 let hideTimeout: number | null = null
 
@@ -14,6 +22,15 @@ const handleFooterClick = () => {
         // Clear any existing timeouts
         if (fadeTimeout) clearTimeout(fadeTimeout)
         if (hideTimeout) clearTimeout(hideTimeout)
+
+        // Generate heart properties once
+        hearts.value = Array.from({ length: 80 }, () => ({
+            delay: `${Math.random() * 4}s`,
+            left: `${Math.random() * 100}%`,
+            size: `${Math.random() * 15 + 8}px`,
+            speed: `${Math.random() * 3 + 4}s`,
+            sway: `${Math.random() * 100 - 50}px`,
+        }))
 
         showHearts.value = true
         fadeOut.value = false
@@ -32,18 +49,7 @@ const handleFooterClick = () => {
     }
 }
 
-const heartColors = [
-    '#ff0000', // red
-    '#ff69b4', // hot pink
-    '#ff1493', // deep pink
-    '#ff4500', // orange red
-    '#ff6347', // tomato
-    '#dc143c', // crimson
-    '#ff007f', // rose
-    '#ff69b4', // hot pink
-    '#ff1493', // deep pink
-    '#ff4500'  // orange red
-]
+
 </script>
 
 <template>
@@ -51,16 +57,14 @@ const heartColors = [
         <p>I <span class="heart-footer">❤️</span> QV ©2025</p>
     </div>
 
-
     <!-- Heart rain overlay -->
     <div v-if="showHearts" class="heart-rain" :class="{ 'fade-out': fadeOut }">
-        <div v-for="i in 80" :key="i" class="heart" :style="{
-            '--delay': `${Math.random() * 4}s`,
-            '--left': `${Math.random() * 100}%`,
-            '--size': `${Math.random() * 15 + 8}px`,
-            '--speed': `${Math.random() * 3 + 4}s`,
-            '--sway': `${Math.random() * 100 - 50}px`,
-            '--color': heartColors[Math.floor(Math.random() * heartColors.length)]
+        <div v-for="(heart, i) in hearts" :key="i" class="heart" :style="{
+            '--delay': heart.delay,
+            '--left': heart.left,
+            '--size': heart.size,
+            '--speed': heart.speed,
+            '--sway': heart.sway
         }">
             ❤️
         </div>
@@ -102,7 +106,6 @@ footer {
     top: -50px;
     left: var(--left);
     font-size: var(--size);
-    color: var(--color);
     animation: heartRain var(--speed) linear infinite;
     animation-delay: var(--delay);
     opacity: 0;

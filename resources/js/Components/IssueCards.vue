@@ -6,6 +6,9 @@ import { useContinuousVoting } from '@/Composables/useContinuousVoting';
 
 import IssueCard from '@/Components/IssueCard.vue';
 
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiArrowLeft, mdiArrowRight } from '@mdi/js';
+
 const props = defineProps<{
     votingRound: VotingTypes.VotingRound;
     participant: VotingTypes.Participant;
@@ -261,8 +264,12 @@ const scrollToCard = (cardIndex: number) => {
         </template>
     </div>
     <div class="movement-controls">
-        <button @click="moveLeft">left</button>
-        <button @click="moveRight">right</button>
+        <button @click="moveLeft">
+            <SvgIcon :path="mdiArrowLeft" type="mdi" :size="24" />
+        </button>
+        <button @click="moveRight">
+            <SvgIcon :path="mdiArrowRight" type="mdi" :size="24" />
+        </button>
     </div>
 
     <!-- <div class="voting-controls">

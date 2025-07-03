@@ -25,10 +25,10 @@ body {
     display: flex;
     flex-direction: column;
 
-    padding: 2rem;
+    // padding: 2rem;
 
     @media screen and (max-width: 1200px) {
-        padding: 1rem;
+        // padding: 1rem;
     }
 
     max-width: 1200px;
@@ -115,6 +115,8 @@ a {
 
     article {
 
+        padding-left: 2rem;
+        padding-right: 2rem;
         width: 100%;
         max-width: 60ch;
         display: flex;
@@ -201,4 +203,80 @@ a {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+}
+
+
+
+.email-section {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    // padding: 1.5rem;
+    margin-bottom: 2rem;
+    background-color: #f9fafb;
+}
+
+.email-form {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.email-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.send-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.send-button:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.send-button:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.message {
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.message.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.message.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+
+
+.election-locked {
+    padding: 1rem;
 }

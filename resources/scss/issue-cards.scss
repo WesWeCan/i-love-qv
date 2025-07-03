@@ -1,24 +1,16 @@
 .issue-cards {
-    padding-top: 5rem;
-    display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
-    grid-template-columns: 1fr 1fr;
-    // Make all cards equal height automatically
-    grid-auto-rows: 1fr;
-
-    // $distance: 15rem;
-    gap: 1rem;
-    row-gap: 10rem;
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    // max-width: 600px;
-    // padding-bottom: calc(30rem + 5rem);
-
-    // .issue-card {
-    //     &:nth-child(2n) {
-    //         transform: translateY(20rem);
-    //     }
-    // }
+    max-width: none;
+    padding: 1rem;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 
     &.visible {
         .issue-card {
@@ -70,21 +62,6 @@
         }
     }
 
-    // @media (max-width: 620px) {
-        display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 1.5rem;
-        padding: 1rem;
-        padding-bottom: 3rem;
-        margin-bottom: 3rem;
-        max-width: none;
-        
-        // Ensure smooth scrolling on mobile
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        
-    // }
 }
 
 
@@ -343,5 +320,23 @@
         .back {
             transform: rotateY(0deg) !important;
         }
+    }
+}
+
+
+.movement-controls {
+    padding: 1rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+
+    button {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
     }
 }

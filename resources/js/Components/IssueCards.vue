@@ -190,6 +190,53 @@ const castSingleVote = (opposed: boolean) => {
     }
 }
 
+const moveLeft = () => {
+    if (!cardsContainer.value) return;
+    
+    // Find the previous issue card to scroll to
+    const currentIndex = selectedIssueIndex.value;
+    if (currentIndex > 0) {
+        const targetIndex = currentIndex - 1;
+        scrollToCard(targetIndex);
+    }
+}
+
+const moveRight = () => {
+    if (!cardsContainer.value) return;
+    
+    // Find the next issue card to scroll to
+    const currentIndex = selectedIssueIndex.value;
+    if (currentIndex < props.votingRound.issues.length - 1) {
+        const targetIndex = currentIndex + 1;
+        scrollToCard(targetIndex);
+    }
+}
+
+const scrollToCard = (cardIndex: number) => {
+    if (!cardsContainer.value || !issueCardRefs.value[cardIndex]) return;
+    
+    const targetCard = issueCardRefs.value[cardIndex];
+    
+    // Calculate the position to scroll to (center the card in the container)
+    const containerRect = cardsContainer.value.getBoundingClientRect();
+    const cardRect = targetCard.getBoundingClientRect();
+    
+    const scrollLeft = cardsContainer.value.scrollLeft + 
+        (cardRect.left - containerRect.left) - 
+        (containerRect.width / 2) + 
+        (cardRect.width / 2);
+    
+    cardsContainer.value.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+    });
+    
+    // Update the selected index
+    selectedIssueIndex.value = cardIndex;
+}
+
+
+
 </script>
 
 
@@ -213,6 +260,11 @@ const castSingleVote = (opposed: boolean) => {
                 @cast-vote="emit('cast-vote', $event)" />
         </template>
     </div>
+    <div class="movement-controls">
+        <button @click="moveLeft">left</button>
+        <button @click="moveRight">right</button>
+    </div>
+
     <!-- <div class="voting-controls">
             <button @pointerdown="castSingleVote(true)">➖</button>
             <button @pointerdown="castSingleVote(false)">➕</button>

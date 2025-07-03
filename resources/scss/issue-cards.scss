@@ -4,21 +4,21 @@
     // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
     grid-template-columns: 1fr 1fr;
+    // Make all cards equal height automatically
+    grid-auto-rows: 1fr;
 
-
-
-    $distance: 15rem;
+    // $distance: 15rem;
     gap: 1rem;
     row-gap: 10rem;
     width: 100%;
-    max-width: 600px;
-    padding-bottom: calc(30rem + 5rem);
+    // max-width: 600px;
+    // padding-bottom: calc(30rem + 5rem);
 
-    .issue-card {
-        &:nth-child(2n) {
-            transform: translateY(20rem);
-        }
-    }
+    // .issue-card {
+    //     &:nth-child(2n) {
+    //         transform: translateY(20rem);
+    //     }
+    // }
 
     &.visible {
         .issue-card {
@@ -70,11 +70,11 @@
         }
     }
 
-    @media (max-width: 620px) {
+    // @media (max-width: 620px) {
         display: flex;
         flex-direction: row;
         overflow-x: auto;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 1rem;
         padding-bottom: 3rem;
         margin-bottom: 3rem;
@@ -84,30 +84,46 @@
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
         
-        .issue-card {
-            flex: 0 0 auto;
-            width: 85%;
-            height: calc(100svh - 300px);
-            
-            &:nth-child(2n) {
-                transform: none;
-            }
-        }
-    }
+    // }
 }
 
+
+// IMPORTANT:
+// This is a bit hard to wrap you head around,
+// the has a height based on the aspect ratio,
+// as well as a max of 500px.
+// the visualizer its height is based on the card height, 
+// since it takes up the available space based on space-between.
+
+
 .issue-card {
+
+    // background-color: pink;
+
     width: 100%;
-    // aspect-ratio: 3/4;
-    height: 25rem;
+    height: 45svh;
+    max-height: 500px;
+    aspect-ratio: 3/4;
     perspective: 1000px;
     position: relative;
     opacity: 0;
 
     transition: all 0.4s;
-    // filter: grayscale(100%) blur(2px);
-    // scale: .8;
-    // opacity: .5;
+
+    display: flex;
+    flex-direction: column;
+// flex: 0 0 auto;
+            // width: 85%;
+            // Remove the huge height and let content determine size
+            // min-height: 400px;
+            // max-height: 500px;
+
+
+
+
+    &:nth-child(2n) {
+        transform: none;
+    }
 
     .issue-card-header {
         display: flex;
@@ -115,6 +131,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        flex-shrink: 0; // Don't let header shrink
 
         .issue-card-emoji {
             font-size: 1.8rem;
@@ -132,28 +149,45 @@
     }
 
     .issue-card-visualizer {
-        width: 100%;
-        display: flex;
-        justify-content: center;
 
-        .emoji {
-            transition: filter 2s;
-        }
+        
+
+
+        position: relative;
+        flex: 1; 
+        // background-color: pink;
+
+        width: 100%;
+
+
+        // width: 100%;
+        // display: flex;
+        // justify-content: center;
+        // flex: 1; // Take up available space
+        // align-items: center;
+
+        // background-color: pink;
+        
+       
+
+        // .emoji {
+        //     transition: filter 2s;
+        // }
     }
 
     .issue-card-footer {
         width: 100%;
         display: flex;
+        // justify-content: space-between;
+        flex-wrap: wrap;
         justify-content: center;
-        gap: 3.5rem;
-        align-self: flex-end;
-        justify-self: flex-end;
-
-
-
-
+        gap: 1rem;
+        // gap: .5rem;
+        flex-shrink: 0; // Don't let footer shrink
+        padding-top: 1rem;
 
         .vote-button {
+            
 
             touch-action: manipulation!important;
             display: flex;
@@ -213,15 +247,8 @@
                     }
                 }
             }
-
-           
         }
-
-       
     }
-
-   
-
 
     &.selected {
         filter: grayscale(0%) blur(0px);
@@ -264,6 +291,39 @@
 
         @media (max-width: 620px) {
             // border: unset;
+        }
+    }
+
+    // Special styling for the back side description text
+    .back {
+        .issue-card-visualizer {
+            overflow-y: auto;
+            padding: 0.5rem;
+            text-align: left;
+            line-height: 1.5;
+            
+            // Custom scrollbar styling
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+            
+            &::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.05);
+                border-radius: 3px;
+            }
+            
+            &::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.2);
+                border-radius: 3px;
+                
+                &:hover {
+                    background: rgba(0, 0, 0, 0.3);
+                }
+            }
+            
+            // Firefox scrollbar
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
         }
     }
 

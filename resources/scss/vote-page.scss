@@ -19,7 +19,7 @@
 
 
 .influence-pool {
-    position:sticky;
+    // position:sticky;
     top: 0;
     width: 100%;
     height: 100%;
@@ -28,8 +28,8 @@
 
     // background: linear-gradient(40deg, #ddfff7 0%,  78.42%);
 
-    background-color: rgba(#f8f3e8, 0.5);
-    backdrop-filter: blur(30px);
+    // background: radial-gradient(ellipse 100% 100% at center top, #ddfff7 0%, #ddfff7 60%, rgba(221, 255, 247, 0) 100%);
+    // backdrop-filter: blur(10px);
 
 
 
@@ -219,5 +219,78 @@
 
     &:hover {
         opacity: 1;
+    }
+}
+
+
+
+.vote-button-text {
+    border: none;
+    color: white;
+    // font-weight: 600;
+    transition: all 0.3s ease;
+    // padding: 0.5rem 1rem;
+    // font-size: 1.1em;
+
+    text-wrap: nowrap;
+    
+    &.vote-button-opposed {
+        // Default opposed styling
+        background-color: #dc3545;
+        
+        &:hover {
+            background-color: #c82333;
+        }
+        
+        // // Contextual color variations
+        // &.reducing-favor {
+        //     background-color: #fd7e14; // Orange - reducing favor (softer than full opposition)
+            
+        //     &:hover {
+        //         background-color: #e66d03;
+        //     }
+        // }
+        
+        // &.increasing-opposed {
+        //     background-color: #c21e2e; // Slightly darker red - strengthening opposition
+            
+        //     &:hover {
+        //         background-color: #a91a27;
+        //     }
+        // }
+        
+        // &.neutral-opposed {
+        //     background-color: #dc3545; // Standard red for initial opposition
+        // }
+    }
+
+    &.vote-button-favor {
+        // Default favor styling
+        background-color: #28a745;
+        
+        &:hover {
+            background-color: #218838;
+        }
+        
+        // // Contextual color variations
+        // &.reducing-opposed {
+        //     background-color: #20c997; // Teal - reducing opposition (softer than full favor)
+            
+        //     &:hover {
+        //         background-color: #1ba085;
+        //     }
+        // }
+        
+        // &.increasing-favor {
+        //     background-color: #1e7e34; // Slightly darker green - strengthening favor
+            
+        //     &:hover {
+        //         background-color: #19692c;
+        //     }
+        // }
+        
+        // &.neutral-favor {
+        //     background-color: #28a745; // Standard green for initial favor
+        // }
     }
 }

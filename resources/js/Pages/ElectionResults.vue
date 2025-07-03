@@ -248,10 +248,11 @@ const showTextResults = ref(false);
 
       <section class="page-section results-page">
 
-        <h1>Voting Results</h1>
-
-        <img :src="heart_purple" alt="Heart" class="heart-icon" />
+        <article>
         <h2>{{ $page.props.election.name }}</h2>
+        <img :src="heart_purple" alt="Heart" class="heart-icon" />
+      </article>
+        
 
 
 
@@ -322,7 +323,7 @@ const showTextResults = ref(false);
 
 
         <button @click="showTextResults = !showTextResults">
-          {{ showTextResults ? 'Ranking' : 'Show as text' }}
+          {{ showTextResults ? 'Show as list' : 'Show as text' }}
         </button>
 
         <!-- <div class="result-container">

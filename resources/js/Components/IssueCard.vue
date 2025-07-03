@@ -64,16 +64,52 @@ defineExpose({
                 <VotesVisualizer :votes="issueVotingData.numberOfVotes" :credits="issueVotingData.creditsSpent"
                     :maxCredits="votingRound.credits" :isPool="false" />
             </div>
-            <div class="issue-card-footer">
-                    <button @click="castSingleVote(true)" class="vote-button vote-button-opposed">
-                        <span class="line"></span>
+            <div class="issue-card-footer" v-if="true">
+                    <button @click="castSingleVote(true)" 
+                            class="vote-button-text vote-button-opposed neutral-opposed"
+                            :class="{
+                                'reducing-favor': issueVotingData.numberOfVotes > 0,
+                                'increasing-opposed': issueVotingData.numberOfVotes < 0,
+                                'neutral-opposed': issueVotingData.numberOfVotes === 0
+                            }">
+                        {{ 
+                            issueVotingData.numberOfVotes > 0 ? 'Less in favour' : 
+                            issueVotingData.numberOfVotes < 0 ? 'More opposed' : 
+                            'Opposed' 
+                        }}
                     </button>
 
-                    <button @click="castSingleVote(false)" class="vote-button vote-button-favor">
-                        <span class="line"></span>
-                        <span class="line"></span>
-                    </button>
+                    <button @click="castSingleVote(false)" 
+                            class="vote-button-text vote-button-favor neutral-favor"
+                            :class="{
+                                'reducing-opposed': issueVotingData.numberOfVotes < 0,
+                                'increasing-favor': issueVotingData.numberOfVotes > 0,
+                                'neutral-favor': issueVotingData.numberOfVotes === 0
+                            }">
+                        {{ 
+                            issueVotingData.numberOfVotes < 0 ? 'Less opposed' : 
+                            issueVotingData.numberOfVotes > 0 ? 'More in favour' : 
+                            'In favour' 
+                        }}
+                    </button>   
             </div>
+            <!-- <div class="issue-card-footer" v-if="true">
+                    <button @click="castSingleVote(true)" 
+                            class="vote-button-text vote-button-opposed neutral-opposed"
+                           >
+                        {{ 
+                            'opposed' 
+                        }}
+                    </button>
+
+                    <button @click="castSingleVote(false)" 
+                            class="vote-button-text vote-button-favor neutral-favor"
+                            >
+                        {{ 
+                            'in favour' 
+                        }}
+                    </button>   
+            </div> -->
         </div>
 
         <div class="back">

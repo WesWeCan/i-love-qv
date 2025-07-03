@@ -1,9 +1,11 @@
 button, *[type="submit"] {
+    appearance: none;
     width: max-content;
     padding: .35rem 2rem;
     background-color: transparent;
     border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 5px;
+    color: black;
     cursor: pointer;
     transition: background-color .4s, color .4s;
     -webkit-font-smoothing: antialiased;
@@ -16,6 +18,51 @@ button, *[type="submit"] {
         background-color: rgba(0, 0, 0, 0.5);
         color: white;
     }
+}
+
+/* Comprehensive iOS button reset - apply to all buttons */
+button, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"],
+.vote-button,
+.send-button,
+.submit-button {
+    /* Remove iOS default styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Remove iOS default gradients and shadows */
+    background-image: none;
+    
+    /* Prevent iOS zoom on input focus */
+    // font-size: 16px;
+    
+    /* Remove iOS tap highlighting */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    
+    /* Prevent iOS text size adjustment */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    
+    /* Improve font rendering on iOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* Enable touch manipulation for better touch response */
+    touch-action: manipulation;
+    
+    /* Ensure buttons are not selectable on iOS */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    /* Reset iOS default box model */
+    box-sizing: border-box;
 }
 
 form {
